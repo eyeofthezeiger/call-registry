@@ -25,6 +25,10 @@ github:
     url: https://raw.githubusercontent.com/github/github-mcp-server/main/README.md
     reachable: true
 figma:
+  - kind: readme
+    url: https://github.com/figma/mcp-server-guide
+    reachable: true
+    note: git clone works. Skills show MCP calls with argument names; mcp.json lists every tool name.
   - kind: openapi
     url: https://raw.githubusercontent.com/figma/rest-api-spec/main/openapi/openapi.yaml
     reachable: true

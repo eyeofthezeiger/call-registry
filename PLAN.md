@@ -41,7 +41,7 @@ Nov 7, 2026. Owner: Matt. Status: scaffold built, seed calls unverified.
 - Slack, 5 API calls: chat.postMessage, chat.update, conversations.history, conversations.replies, users.lookupByEmail. From docs.slack.dev.
 - Slack, 8 MCP tools (search public, search public and private, search channels, read channel, read thread, read user profile, send message, schedule message). Names and some arguments from Slack's official slack-skills-plugin repo.
 - GitHub, 5 API calls (pulls create, get; issues create, comment; repo contents) from the official OpenAPI spec, and 4 MCP tools (create_pull_request, pull_request_read, get_file_contents, issue_write) from the github-mcp-server README.
-- Figma, 6 API calls (me, file, nodes, images, comments get and post) from Figma's OpenAPI spec, and 4 MCP tools (get_design_context, get_metadata, get_screenshot, get_variable_defs) from the MCP docs.
+- Figma, 6 API calls (me, file, nodes, images, comments get and post) from Figma's OpenAPI spec, and 4 MCP tools (get_design_context, get_metadata, get_screenshot, get_variable_defs) from the MCP docs, with argument names from Figma's mcp-server-guide repo.
 - Atlassian, 7 Rovo MCP tools (resources, JQL search, get and create issue, comment, Confluence search and get). From Atlassian's supported tools page, with argument names from the call examples in Atlassian's own atlassian-mcp-server skills.
 - Atlassian, 2 Jira REST v3 calls (get issue, create issue). Method, path, auth and limits from the Jira rate limiting and basic auth pages. Params and scopes left out.
 
@@ -50,7 +50,7 @@ Nov 7, 2026. Owner: Matt. Status: scaffold built, seed calls unverified.
 - Atlassian REST: reference pages are JS-rendered and the OpenAPI files come back cut off, here and through the fetch tool. Jira search/jql (method not stated), add comment and every Confluence v2 page call are still left out. Confirmed so far: Confluence v2 base https://{your-domain}/wiki/api/v2, Basic auth with email:api_token, 429 with Retry-After. Fill from a normal browser.
 - Slack MCP: most argument names (query, channel, thread, text) aren't stated. Fill from tools/list.
 - Atlassian MCP: argument names come from examples, not a schema. Which are required, and the edit-comment argument, still need tools/list.
-- Figma MCP: argument names aren't on the docs pages. Fill from tools/list.
+- Figma MCP: argument names come from Figma's own examples. get_variable_defs arguments aren't shown anywhere; fill from tools/list.
 - GitHub REST: token permissions aren't in the spec.
 
 ## Known issue to fill

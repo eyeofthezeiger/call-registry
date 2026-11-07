@@ -12,7 +12,7 @@ tool:
   transport: http
   read_only: true
 params:
-  notes: Argument names aren't listed on the tools page. Read them from the server's tools/list, then fill this in.
+  notes: Figma's repo describes it (variables and styles such as color, spacing and typography used in the selection) but shows no call with arguments. Read them from tools/list.
 auth:
   methods: [oauth2]
   notes: Sign in with Figma on first connect and click Allow access. The MCP server runs its own OAuth; no REST scopes to set. Only clients in the Figma MCP catalog can connect to the remote server.
@@ -43,11 +43,16 @@ source:
     - https://developers.figma.com/docs/figma-mcp-server/
     - https://developers.figma.com/docs/figma-mcp-server/remote-server-installation/
     - https://developers.figma.com/docs/figma-mcp-server/local-server-installation/
+    - https://github.com/figma/mcp-server-guide
   read_on: 2026-11-07
   kind: docs-page
 status: unverified
 last_checked: 2026-11-07
 notes: Available on remote and desktop servers.
+rate_limit:
+  tier: Figma MCP
+  notes: Read tools are rate limited. Starter plan users, and View or Collab seats on paid plans, get up to 6 tool calls per month. Dev or Full seats on Professional, Organization or Enterprise get per-minute limits that match Tier 1 of the REST API.
+  source_url: https://github.com/figma/mcp-server-guide
 smoke:
   kind: manual
   notes: Remote server needs an interactive Figma sign-in from a catalog client, so the runner can't reach it with an env token. Check by hand in Claude Code with /mcp.

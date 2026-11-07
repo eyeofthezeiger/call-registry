@@ -12,7 +12,10 @@ tool:
   transport: http
   read_only: true
 params:
-  notes: Argument names aren't listed on the tools page. Read them from the server's tools/list, then fill this in.
+  required:
+    - fileKey
+    - nodeId
+  notes: Argument names come from the call examples in Figma's official mcp-server-guide repo (read Nov 7, 2026), not from a published schema. Every example passes fileKey and nodeId, so they're listed as required; the schema may differ. Confirm against tools/list. From a figma.com/design/:fileKey/:fileName?node-id=:nodeId URL, take fileKey and nodeId; on a branch URL use the branchKey as fileKey. Figma's examples pass nodeId both as 1-2 and 1:2, and its SwiftUI skill says to replace - with :. Figma suggests it first on large selections to get the node map, then get_design_context per child.
 auth:
   methods: [oauth2]
   notes: Sign in with Figma on first connect and click Allow access. The MCP server runs its own OAuth; no REST scopes to set. Only clients in the Figma MCP catalog can connect to the remote server.
@@ -43,11 +46,21 @@ source:
     - https://developers.figma.com/docs/figma-mcp-server/
     - https://developers.figma.com/docs/figma-mcp-server/remote-server-installation/
     - https://developers.figma.com/docs/figma-mcp-server/local-server-installation/
+    - https://github.com/figma/mcp-server-guide
   read_on: 2026-11-07
   kind: docs-page
 status: unverified
 last_checked: 2026-11-07
 notes: Available on remote and desktop servers.
+rate_limit:
+  tier: Figma MCP
+  notes: Read tools are rate limited. Starter plan users, and View or Collab seats on paid plans, get up to 6 tool calls per month. Dev or Full seats on Professional, Organization or Enterprise get per-minute limits that match Tier 1 of the REST API.
+  source_url: https://github.com/figma/mcp-server-guide
+errors:
+  - code: slides-not-supported
+    meaning: Doesn't work on Figma Slides files; it only supports Design files, per Figma's Slides skill.
+    fix: Use get_screenshot for slides, or read-only use_figma scripts.
+    fix_status: unverified
 smoke:
   kind: manual
   notes: Remote server needs an interactive Figma sign-in from a catalog client, so the runner can't reach it with an env token. Check by hand in Claude Code with /mcp.
