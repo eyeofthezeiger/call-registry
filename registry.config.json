@@ -1,0 +1,7 @@
+{
+  "verifiers": {
+    "matt": "eyeofthezeiger"
+  },
+  "providers": ["google-workspace", "atlassian", "slack", "github", "figma"],
+  "surfaces": ["api", "mcp"]
+}

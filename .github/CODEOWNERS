@@ -1,0 +1,3 @@
+# Every change needs Matt's review. With branch protection on main
+# ("Require review from Code Owners"), this is the real verification gate.
+* @eyeofthezeiger

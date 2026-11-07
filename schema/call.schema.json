@@ -1,0 +1,432 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/eyeofthezeiger/call-registry/schema/call.schema.json",
+  "title": "Call registry entry",
+  "description": "One API call or one MCP tool call. Lives as YAML front matter at the top of a markdown file under calls/<provider>/<surface>/.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "provider",
+    "surface",
+    "operation",
+    "summary",
+    "auth",
+    "source",
+    "status",
+    "last_checked"
+  ],
+  "properties": {
+    "id": {
+      "description": "provider.surface.operation. Provider is lowercase; operation keeps the provider's own casing. Must match the file name (without .md).",
+      "type": "string",
+      "pattern": "^[a-z0-9-]+\\.(api|mcp)\\.[A-Za-z0-9._-]+$"
+    },
+    "provider": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$"
+    },
+    "product": {
+      "description": "Sub-product inside a provider, e.g. gmail, jira, confluence.",
+      "type": "string"
+    },
+    "surface": {
+      "enum": [
+        "api",
+        "mcp"
+      ]
+    },
+    "operation": {
+      "description": "The provider's own name for the call, e.g. chat.postMessage or create_pull_request.",
+      "type": "string"
+    },
+    "summary": {
+      "type": "string",
+      "maxLength": 200
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "endpoint": {
+      "description": "API calls only.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "method",
+        "url"
+      ],
+      "properties": {
+        "method": {
+          "enum": [
+            "GET",
+            "POST",
+            "PUT",
+            "PATCH",
+            "DELETE"
+          ]
+        },
+        "url": {
+          "type": "string",
+          "pattern": "^https://"
+        },
+        "content_types": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "tool": {
+      "description": "MCP calls only.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "server"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "server": {
+          "description": "Server key, matching servers/<key> in the config snippets.",
+          "type": "string"
+        },
+        "server_url": {
+          "type": "string",
+          "pattern": "^https?://"
+        },
+        "transport": {
+          "enum": [
+            "streamable-http",
+            "http",
+            "sse",
+            "stdio"
+          ]
+        },
+        "toolset": {
+          "type": "string"
+        },
+        "read_only": {
+          "type": "boolean"
+        }
+      }
+    },
+    "params": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "required": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "optional": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    },
+    "auth": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "methods"
+      ],
+      "properties": {
+        "methods": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "enum": [
+              "oauth2",
+              "bot-token",
+              "user-token",
+              "personal-access-token",
+              "plan-access-token",
+              "api-token",
+              "service-account",
+              "app-token",
+              "none"
+            ]
+          }
+        },
+        "header": {
+          "type": "string"
+        },
+        "scopes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "scopes_mode": {
+          "description": "any = one of the listed scopes is enough (Google, Figma style). all = every scope is needed.",
+          "enum": [
+            "any",
+            "all"
+          ]
+        },
+        "least_privilege_scope": {
+          "type": "string"
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    },
+    "config": {
+      "description": "Ready-to-paste snippets. generic works anywhere; platforms only when a tool needs its own shape.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "generic": {
+          "type": "string"
+        },
+        "platforms": {
+          "type": "object",
+          "propertyNames": {
+            "enum": [
+              "claude-code",
+              "claude-desktop",
+              "vscode",
+              "cursor",
+              "codex",
+              "windsurf",
+              "docker"
+            ]
+          },
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "examples": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "request": {
+          "type": "string"
+        },
+        "response": {
+          "type": "string"
+        }
+      }
+    },
+    "rate_limit": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "tier": {
+          "type": "string"
+        },
+        "notes": {
+          "type": "string"
+        },
+        "source_url": {
+          "type": "string",
+          "pattern": "^https://"
+        }
+      }
+    },
+    "errors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "meaning",
+          "fix_status"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "meaning": {
+            "type": "string"
+          },
+          "fix": {
+            "type": "string"
+          },
+          "fix_status": {
+            "enum": [
+              "unverified",
+              "verified",
+              "none"
+            ]
+          },
+          "verified_by": {
+            "type": "string"
+          },
+          "verified_on": {
+            "type": "string",
+            "format": "date"
+          },
+          "seen_in": {
+            "description": "Where it was hit, e.g. org name or client. No secrets.",
+            "type": "string"
+          },
+          "needs_info": {
+            "description": "Open question for the verifier. Remove once answered.",
+            "type": "string"
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "fix_status": {
+                  "const": "verified"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "fix",
+                "verified_by",
+                "verified_on"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "url",
+        "read_on",
+        "kind"
+      ],
+      "properties": {
+        "url": {
+          "type": "string",
+          "pattern": "^https://"
+        },
+        "also": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^https://"
+          }
+        },
+        "read_on": {
+          "type": "string",
+          "format": "date"
+        },
+        "kind": {
+          "enum": [
+            "openapi",
+            "discovery",
+            "docs-page",
+            "readme",
+            "tools-list"
+          ]
+        },
+        "spec_revision": {
+          "type": "string"
+        },
+        "reference_url": {
+          "description": "Human-readable docs page linked from the spec. Not necessarily read.",
+          "type": "string",
+          "pattern": "^https://"
+        }
+      }
+    },
+    "status": {
+      "enum": [
+        "unverified",
+        "verified",
+        "deprecated",
+        "broken"
+      ]
+    },
+    "verified_by": {
+      "type": "string"
+    },
+    "verified_on": {
+      "type": "string",
+      "format": "date"
+    },
+    "verified_with": {
+      "description": "Client or setup it was verified in, e.g. claude-code, curl.",
+      "type": "string"
+    },
+    "last_checked": {
+      "type": "string",
+      "format": "date"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "surface": {
+            "const": "api"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "endpoint"
+        ],
+        "not": {
+          "required": [
+            "tool"
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "surface": {
+            "const": "mcp"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "tool"
+        ],
+        "not": {
+          "required": [
+            "endpoint"
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "verified"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "verified_by",
+          "verified_on"
+        ]
+      }
+    }
+  ]
+}

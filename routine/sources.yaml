@@ -1,0 +1,54 @@
+# Where the update routine reads each provider. Public, official sources only.
+# Prefer machine-readable specs; fall back to docs pages. Respect robots.txt and terms.
+# reachable: whether the source loaded from the cloud session on 2026-11-07.
+google-workspace:
+  - kind: discovery
+    url: https://gmail.googleapis.com/$discovery/rest?version=v1
+    reachable: true
+  - kind: discovery
+    url: https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest
+    reachable: true
+  - kind: discovery
+    url: https://www.googleapis.com/discovery/v1/apis/drive/v3/rest
+    reachable: true
+  - kind: discovery
+    url: https://docs.googleapis.com/$discovery/rest?version=v1
+    reachable: true
+  - kind: discovery
+    url: https://sheets.googleapis.com/$discovery/rest?version=v4
+    reachable: true
+github:
+  - kind: openapi
+    url: https://raw.githubusercontent.com/github/rest-api-description/main/descriptions/api.github.com/api.github.com.json
+    reachable: true
+  - kind: readme
+    url: https://raw.githubusercontent.com/github/github-mcp-server/main/README.md
+    reachable: true
+figma:
+  - kind: openapi
+    url: https://raw.githubusercontent.com/figma/rest-api-spec/main/openapi/openapi.yaml
+    reachable: true
+  - kind: docs-page
+    url: https://developers.figma.com/docs/figma-mcp-server/tools-and-prompts/
+    reachable: true
+slack:
+  - kind: docs-page
+    url: https://docs.slack.dev/reference/methods/
+    reachable: true
+    note: One page per method. Pages loaded through a fetch tool, not curl.
+  - kind: docs-page
+    url: https://docs.slack.dev/ai/slack-mcp-server
+    reachable: true
+    note: Lists features by area, not every tool name. Use the server's tools/list.
+atlassian:
+  - kind: docs-page
+    url: https://support.atlassian.com/atlassian-rovo-mcp-server/docs/supported-tools/
+    reachable: true
+  - kind: openapi
+    url: https://developer.atlassian.com/cloud/jira/platform/swagger-v3.v3.json
+    reachable: false
+    note: Loaded but came back cut off (schemas only, no paths). REST pages are JS-rendered. Try from a normal machine.
+  - kind: openapi
+    url: https://developer.atlassian.com/cloud/confluence/openapi-v2.v3.json
+    reachable: false
+    note: Same as Jira.
