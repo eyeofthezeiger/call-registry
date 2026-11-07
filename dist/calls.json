@@ -1,6 +1,527 @@
 {
   "schema": "schema/call.schema.json",
-  "count": 0,
-  "counts": {},
-  "calls": []
+  "count": 9,
+  "counts": {
+    "unverified": 9
+  },
+  "calls": [
+    {
+      "id": "google-workspace.api.calendar.events.insert",
+      "provider": "google-workspace",
+      "product": "calendar",
+      "surface": "api",
+      "operation": "calendar.events.insert",
+      "summary": "Create an event on a calendar.",
+      "tags": [
+        "calendar",
+        "write"
+      ],
+      "endpoint": {
+        "method": "POST",
+        "url": "https://www.googleapis.com/calendar/v3/calendars/{calendarId}/events"
+      },
+      "params": {
+        "required": [
+          "calendarId"
+        ],
+        "optional": [
+          "sendUpdates",
+          "conferenceDataVersion",
+          "supportsAttachments",
+          "maxAttendees"
+        ],
+        "notes": "Body is an Event resource. sendUpdates is all, externalOnly or none. Use none for tests so guests aren't emailed."
+      },
+      "auth": {
+        "methods": [
+          "oauth2"
+        ],
+        "header": "Authorization: Bearer <ACCESS_TOKEN>",
+        "scopes": [
+          "https://www.googleapis.com/auth/calendar.events",
+          "https://www.googleapis.com/auth/calendar",
+          "https://www.googleapis.com/auth/calendar.events.owned",
+          "https://www.googleapis.com/auth/calendar.app.created"
+        ],
+        "scopes_mode": "any",
+        "least_privilege_scope": "https://www.googleapis.com/auth/calendar.events.owned"
+      },
+      "config": {
+        "generic": "curl -s -X POST -H \"Authorization: Bearer $GOOGLE_ACCESS_TOKEN\" -H \"Content-Type: application/json\" \\\n  -d '{\"summary\":\"Test\",\"start\":{\"dateTime\":\"2026-11-10T15:00:00-05:00\"},\"end\":{\"dateTime\":\"2026-11-10T15:30:00-05:00\"}}' \\\n  \"https://www.googleapis.com/calendar/v3/calendars/primary/events?sendUpdates=none\"\n"
+      },
+      "source": {
+        "url": "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest",
+        "read_on": "2026-11-07",
+        "kind": "discovery",
+        "spec_revision": "20261102"
+      },
+      "status": "unverified",
+      "last_checked": "2026-11-07",
+      "file": "calls/google-workspace/api/google-workspace.api.calendar.events.insert.md",
+      "body": ""
+    },
+    {
+      "id": "google-workspace.api.calendar.events.list",
+      "provider": "google-workspace",
+      "product": "calendar",
+      "surface": "api",
+      "operation": "calendar.events.list",
+      "summary": "List events on a calendar, optionally in a time window.",
+      "tags": [
+        "calendar",
+        "read"
+      ],
+      "endpoint": {
+        "method": "GET",
+        "url": "https://www.googleapis.com/calendar/v3/calendars/{calendarId}/events"
+      },
+      "params": {
+        "required": [
+          "calendarId"
+        ],
+        "optional": [
+          "timeMin",
+          "timeMax",
+          "singleEvents",
+          "orderBy",
+          "maxResults",
+          "pageToken",
+          "q",
+          "timeZone",
+          "syncToken",
+          "showDeleted",
+          "eventTypes"
+        ],
+        "notes": "calendarId \"primary\" is the signed-in user's main calendar. Use singleEvents=true to expand recurring events (needed for orderBy=startTime)."
+      },
+      "auth": {
+        "methods": [
+          "oauth2"
+        ],
+        "header": "Authorization: Bearer <ACCESS_TOKEN>",
+        "scopes": [
+          "https://www.googleapis.com/auth/calendar.events.readonly",
+          "https://www.googleapis.com/auth/calendar.readonly",
+          "https://www.googleapis.com/auth/calendar.events",
+          "https://www.googleapis.com/auth/calendar",
+          "https://www.googleapis.com/auth/calendar.events.owned.readonly",
+          "https://www.googleapis.com/auth/calendar.events.owned",
+          "https://www.googleapis.com/auth/calendar.events.public.readonly",
+          "https://www.googleapis.com/auth/calendar.events.freebusy",
+          "https://www.googleapis.com/auth/calendar.app.created"
+        ],
+        "scopes_mode": "any",
+        "least_privilege_scope": "https://www.googleapis.com/auth/calendar.events.readonly"
+      },
+      "config": {
+        "generic": "curl -s -H \"Authorization: Bearer $GOOGLE_ACCESS_TOKEN\" \\\n  \"https://www.googleapis.com/calendar/v3/calendars/primary/events?singleEvents=true&orderBy=startTime&timeMin=2026-11-07T00:00:00Z&maxResults=10\"\n"
+      },
+      "source": {
+        "url": "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest",
+        "read_on": "2026-11-07",
+        "kind": "discovery",
+        "spec_revision": "20261102"
+      },
+      "status": "unverified",
+      "last_checked": "2026-11-07",
+      "file": "calls/google-workspace/api/google-workspace.api.calendar.events.list.md",
+      "body": "orderBy=startTime only works with singleEvents=true, per the orderBy enum description in the discovery doc."
+    },
+    {
+      "id": "google-workspace.api.docs.documents.get",
+      "provider": "google-workspace",
+      "product": "docs",
+      "surface": "api",
+      "operation": "docs.documents.get",
+      "summary": "Get the latest version of a Google Doc as structured JSON.",
+      "tags": [
+        "docs",
+        "read"
+      ],
+      "endpoint": {
+        "method": "GET",
+        "url": "https://docs.googleapis.com/v1/documents/{documentId}"
+      },
+      "params": {
+        "required": [
+          "documentId"
+        ],
+        "optional": [
+          "includeTabsContent",
+          "suggestionsViewMode",
+          "commentsViewMode"
+        ],
+        "notes": "With includeTabsContent=true, content comes back in Document.tabs instead of body. Docs with tabs need this to see every tab."
+      },
+      "auth": {
+        "methods": [
+          "oauth2"
+        ],
+        "header": "Authorization: Bearer <ACCESS_TOKEN>",
+        "scopes": [
+          "https://www.googleapis.com/auth/documents.readonly",
+          "https://www.googleapis.com/auth/documents",
+          "https://www.googleapis.com/auth/drive.readonly",
+          "https://www.googleapis.com/auth/drive.file",
+          "https://www.googleapis.com/auth/drive"
+        ],
+        "scopes_mode": "any",
+        "least_privilege_scope": "https://www.googleapis.com/auth/documents.readonly"
+      },
+      "config": {
+        "generic": "curl -s -H \"Authorization: Bearer $GOOGLE_ACCESS_TOKEN\" \\\n  \"https://docs.googleapis.com/v1/documents/$DOC_ID?includeTabsContent=true\"\n"
+      },
+      "source": {
+        "url": "https://docs.googleapis.com/$discovery/rest?version=v1",
+        "read_on": "2026-11-07",
+        "kind": "discovery",
+        "spec_revision": "20261106"
+      },
+      "status": "unverified",
+      "last_checked": "2026-11-07",
+      "file": "calls/google-workspace/api/google-workspace.api.docs.documents.get.md",
+      "body": ""
+    },
+    {
+      "id": "google-workspace.api.drive.files.list",
+      "provider": "google-workspace",
+      "product": "drive",
+      "surface": "api",
+      "operation": "drive.files.list",
+      "summary": "List or search the user's Drive files.",
+      "tags": [
+        "files",
+        "read"
+      ],
+      "endpoint": {
+        "method": "GET",
+        "url": "https://www.googleapis.com/drive/v3/files"
+      },
+      "params": {
+        "optional": [
+          "q",
+          "pageSize",
+          "pageToken",
+          "orderBy",
+          "corpora",
+          "driveId",
+          "includeItemsFromAllDrives",
+          "supportsAllDrives",
+          "spaces",
+          "fields"
+        ],
+        "notes": "pageSize max 1000. For shared drives set supportsAllDrives=true and includeItemsFromAllDrives=true. fields is a standard Google query parameter for partial responses."
+      },
+      "auth": {
+        "methods": [
+          "oauth2"
+        ],
+        "header": "Authorization: Bearer <ACCESS_TOKEN>",
+        "scopes": [
+          "https://www.googleapis.com/auth/drive.metadata.readonly",
+          "https://www.googleapis.com/auth/drive.readonly",
+          "https://www.googleapis.com/auth/drive.file",
+          "https://www.googleapis.com/auth/drive.metadata",
+          "https://www.googleapis.com/auth/drive",
+          "https://www.googleapis.com/auth/drive.appdata",
+          "https://www.googleapis.com/auth/drive.meet.readonly",
+          "https://www.googleapis.com/auth/drive.photos.readonly"
+        ],
+        "scopes_mode": "any",
+        "least_privilege_scope": "https://www.googleapis.com/auth/drive.metadata.readonly",
+        "notes": "drive.file only sees files the app created or the user opened with it."
+      },
+      "config": {
+        "generic": "curl -s -H \"Authorization: Bearer $GOOGLE_ACCESS_TOKEN\" \\\n  \"https://www.googleapis.com/drive/v3/files?pageSize=10&q=name%20contains%20'plan'&fields=files(id,name,mimeType,modifiedTime)\"\n"
+      },
+      "source": {
+        "url": "https://www.googleapis.com/discovery/v1/apis/drive/v3/rest",
+        "read_on": "2026-11-07",
+        "kind": "discovery",
+        "spec_revision": "20261106"
+      },
+      "status": "unverified",
+      "last_checked": "2026-11-07",
+      "file": "calls/google-workspace/api/google-workspace.api.drive.files.list.md",
+      "body": ""
+    },
+    {
+      "id": "google-workspace.api.gmail.users.drafts.create",
+      "provider": "google-workspace",
+      "product": "gmail",
+      "surface": "api",
+      "operation": "gmail.users.drafts.create",
+      "summary": "Create a draft (gets the DRAFT label). Safer default than sending.",
+      "tags": [
+        "email",
+        "write"
+      ],
+      "endpoint": {
+        "method": "POST",
+        "url": "https://gmail.googleapis.com/gmail/v1/users/{userId}/drafts"
+      },
+      "params": {
+        "required": [
+          "userId"
+        ],
+        "notes": "Body is a Draft resource whose message.raw is a base64url-encoded RFC 2822 email."
+      },
+      "auth": {
+        "methods": [
+          "oauth2"
+        ],
+        "header": "Authorization: Bearer <ACCESS_TOKEN>",
+        "scopes": [
+          "https://www.googleapis.com/auth/gmail.compose",
+          "https://www.googleapis.com/auth/gmail.modify",
+          "https://mail.google.com/",
+          "https://www.googleapis.com/auth/gmail.addons.current.action.compose"
+        ],
+        "scopes_mode": "any",
+        "least_privilege_scope": "https://www.googleapis.com/auth/gmail.compose"
+      },
+      "config": {
+        "generic": "RAW=$(printf 'To: you@example.com\\r\\nSubject: Test draft\\r\\n\\r\\nHello' | base64 | tr '+/' '-_' | tr -d '=\\n')\ncurl -s -X POST -H \"Authorization: Bearer $GOOGLE_ACCESS_TOKEN\" -H \"Content-Type: application/json\" \\\n  -d \"{\\\"message\\\":{\\\"raw\\\":\\\"$RAW\\\"}}\" \\\n  \"https://gmail.googleapis.com/gmail/v1/users/me/drafts\"\n"
+      },
+      "source": {
+        "url": "https://gmail.googleapis.com/$discovery/rest?version=v1",
+        "read_on": "2026-11-07",
+        "kind": "discovery",
+        "spec_revision": "20261102"
+      },
+      "status": "unverified",
+      "last_checked": "2026-11-07",
+      "file": "calls/google-workspace/api/google-workspace.api.gmail.users.drafts.create.md",
+      "body": "The raw-message format (base64url RFC 2822) comes from the Message schema's raw field in the discovery doc."
+    },
+    {
+      "id": "google-workspace.api.gmail.users.messages.get",
+      "provider": "google-workspace",
+      "product": "gmail",
+      "surface": "api",
+      "operation": "gmail.users.messages.get",
+      "summary": "Get one message by ID, in minimal, full, raw or metadata format.",
+      "tags": [
+        "email",
+        "read"
+      ],
+      "endpoint": {
+        "method": "GET",
+        "url": "https://gmail.googleapis.com/gmail/v1/users/{userId}/messages/{id}"
+      },
+      "params": {
+        "required": [
+          "userId",
+          "id"
+        ],
+        "optional": [
+          "format",
+          "metadataHeaders"
+        ],
+        "notes": "format is one of minimal, full, raw, metadata. metadataHeaders only applies with format=metadata."
+      },
+      "auth": {
+        "methods": [
+          "oauth2"
+        ],
+        "header": "Authorization: Bearer <ACCESS_TOKEN>",
+        "scopes": [
+          "https://www.googleapis.com/auth/gmail.metadata",
+          "https://www.googleapis.com/auth/gmail.readonly",
+          "https://www.googleapis.com/auth/gmail.modify",
+          "https://mail.google.com/",
+          "https://www.googleapis.com/auth/gmail.addons.current.message.action",
+          "https://www.googleapis.com/auth/gmail.addons.current.message.metadata",
+          "https://www.googleapis.com/auth/gmail.addons.current.message.readonly"
+        ],
+        "scopes_mode": "any",
+        "least_privilege_scope": "https://www.googleapis.com/auth/gmail.readonly"
+      },
+      "config": {
+        "generic": "curl -s -H \"Authorization: Bearer $GOOGLE_ACCESS_TOKEN\" \\\n  \"https://gmail.googleapis.com/gmail/v1/users/me/messages/$MESSAGE_ID?format=metadata&metadataHeaders=Subject&metadataHeaders=From\"\n"
+      },
+      "source": {
+        "url": "https://gmail.googleapis.com/$discovery/rest?version=v1",
+        "read_on": "2026-11-07",
+        "kind": "discovery",
+        "spec_revision": "20261102"
+      },
+      "status": "unverified",
+      "last_checked": "2026-11-07",
+      "file": "calls/google-workspace/api/google-workspace.api.gmail.users.messages.get.md",
+      "body": ""
+    },
+    {
+      "id": "google-workspace.api.gmail.users.messages.list",
+      "provider": "google-workspace",
+      "product": "gmail",
+      "surface": "api",
+      "operation": "gmail.users.messages.list",
+      "summary": "List message IDs in the user's mailbox, optionally filtered by a Gmail search query.",
+      "tags": [
+        "email",
+        "read"
+      ],
+      "endpoint": {
+        "method": "GET",
+        "url": "https://gmail.googleapis.com/gmail/v1/users/{userId}/messages"
+      },
+      "params": {
+        "required": [
+          "userId"
+        ],
+        "optional": [
+          "q",
+          "maxResults",
+          "pageToken",
+          "labelIds",
+          "includeSpamTrash"
+        ],
+        "notes": "userId accepts \"me\" for the authenticated user. maxResults defaults to 100, max 500. q uses Gmail search box syntax. Returns IDs only; call messages.get for content."
+      },
+      "auth": {
+        "methods": [
+          "oauth2"
+        ],
+        "header": "Authorization: Bearer <ACCESS_TOKEN>",
+        "scopes": [
+          "https://www.googleapis.com/auth/gmail.metadata",
+          "https://www.googleapis.com/auth/gmail.readonly",
+          "https://www.googleapis.com/auth/gmail.modify",
+          "https://mail.google.com/"
+        ],
+        "scopes_mode": "any",
+        "least_privilege_scope": "https://www.googleapis.com/auth/gmail.readonly",
+        "notes": "The discovery doc lists gmail.metadata, but per the q description the q parameter can't be used with the metadata scope. Use gmail.readonly if you search."
+      },
+      "config": {
+        "generic": "curl -s -H \"Authorization: Bearer $GOOGLE_ACCESS_TOKEN\" \\\n  \"https://gmail.googleapis.com/gmail/v1/users/me/messages?maxResults=10&q=is:unread\"\n"
+      },
+      "examples": {
+        "response": "{ \"messages\": [ { \"id\": \"<id>\", \"threadId\": \"<threadId>\" } ], \"nextPageToken\": \"<token>\", \"resultSizeEstimate\": 1 }\n"
+      },
+      "source": {
+        "url": "https://gmail.googleapis.com/$discovery/rest?version=v1",
+        "read_on": "2026-11-07",
+        "kind": "discovery",
+        "spec_revision": "20261102"
+      },
+      "status": "unverified",
+      "last_checked": "2026-11-07",
+      "file": "calls/google-workspace/api/google-workspace.api.gmail.users.messages.list.md",
+      "body": "Response shape (ListMessagesResponse) is from the discovery doc. Field names in the example are from that schema; values are placeholders."
+    },
+    {
+      "id": "google-workspace.api.sheets.spreadsheets.values.append",
+      "provider": "google-workspace",
+      "product": "sheets",
+      "surface": "api",
+      "operation": "sheets.spreadsheets.values.append",
+      "summary": "Append rows after the last row of the table found in a range.",
+      "tags": [
+        "sheets",
+        "write"
+      ],
+      "endpoint": {
+        "method": "POST",
+        "url": "https://sheets.googleapis.com/v4/spreadsheets/{spreadsheetId}/values/{range}:append"
+      },
+      "params": {
+        "required": [
+          "spreadsheetId",
+          "range",
+          "valueInputOption"
+        ],
+        "optional": [
+          "insertDataOption",
+          "includeValuesInResponse",
+          "responseValueRenderOption",
+          "responseDateTimeRenderOption"
+        ],
+        "notes": "valueInputOption is RAW or USER_ENTERED. The method description says the caller must give spreadsheet ID, range and valueInputOption, though the parameter itself isn't flagged required."
+      },
+      "auth": {
+        "methods": [
+          "oauth2"
+        ],
+        "header": "Authorization: Bearer <ACCESS_TOKEN>",
+        "scopes": [
+          "https://www.googleapis.com/auth/spreadsheets",
+          "https://www.googleapis.com/auth/drive.file",
+          "https://www.googleapis.com/auth/drive"
+        ],
+        "scopes_mode": "any",
+        "least_privilege_scope": "https://www.googleapis.com/auth/spreadsheets"
+      },
+      "config": {
+        "generic": "curl -s -X POST -H \"Authorization: Bearer $GOOGLE_ACCESS_TOKEN\" -H \"Content-Type: application/json\" \\\n  -d '{\"values\":[[\"2026-11-07\",\"hello\"]]}' \\\n  \"https://sheets.googleapis.com/v4/spreadsheets/$SHEET_ID/values/Sheet1%21A1:append?valueInputOption=USER_ENTERED\"\n"
+      },
+      "source": {
+        "url": "https://sheets.googleapis.com/$discovery/rest?version=v4",
+        "read_on": "2026-11-07",
+        "kind": "discovery",
+        "spec_revision": "20261106"
+      },
+      "status": "unverified",
+      "last_checked": "2026-11-07",
+      "file": "calls/google-workspace/api/google-workspace.api.sheets.spreadsheets.values.append.md",
+      "body": ""
+    },
+    {
+      "id": "google-workspace.api.sheets.spreadsheets.values.get",
+      "provider": "google-workspace",
+      "product": "sheets",
+      "surface": "api",
+      "operation": "sheets.spreadsheets.values.get",
+      "summary": "Read a range of cell values (A1 or R1C1 notation).",
+      "tags": [
+        "sheets",
+        "read"
+      ],
+      "endpoint": {
+        "method": "GET",
+        "url": "https://sheets.googleapis.com/v4/spreadsheets/{spreadsheetId}/values/{range}"
+      },
+      "params": {
+        "required": [
+          "spreadsheetId",
+          "range"
+        ],
+        "optional": [
+          "majorDimension",
+          "valueRenderOption",
+          "dateTimeRenderOption"
+        ],
+        "notes": "URL-encode the range, e.g. Sheet1!A1:D10 becomes Sheet1%21A1%3AD10."
+      },
+      "auth": {
+        "methods": [
+          "oauth2"
+        ],
+        "header": "Authorization: Bearer <ACCESS_TOKEN>",
+        "scopes": [
+          "https://www.googleapis.com/auth/spreadsheets.readonly",
+          "https://www.googleapis.com/auth/spreadsheets",
+          "https://www.googleapis.com/auth/drive.readonly",
+          "https://www.googleapis.com/auth/drive.file",
+          "https://www.googleapis.com/auth/drive"
+        ],
+        "scopes_mode": "any",
+        "least_privilege_scope": "https://www.googleapis.com/auth/spreadsheets.readonly"
+      },
+      "config": {
+        "generic": "curl -s -H \"Authorization: Bearer $GOOGLE_ACCESS_TOKEN\" \\\n  \"https://sheets.googleapis.com/v4/spreadsheets/$SHEET_ID/values/Sheet1%21A1%3AD10\"\n"
+      },
+      "source": {
+        "url": "https://sheets.googleapis.com/$discovery/rest?version=v4",
+        "read_on": "2026-11-07",
+        "kind": "discovery",
+        "spec_revision": "20261106"
+      },
+      "status": "unverified",
+      "last_checked": "2026-11-07",
+      "file": "calls/google-workspace/api/google-workspace.api.sheets.spreadsheets.values.get.md",
+      "body": ""
+    }
+  ]
 }
