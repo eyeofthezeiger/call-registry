@@ -1,10 +1,378 @@
 {
   "schema": "schema/call.schema.json",
-  "count": 9,
+  "count": 16,
   "counts": {
-    "unverified": 9
+    "unverified": 16
   },
   "calls": [
+    {
+      "id": "atlassian.mcp.addOrEditJiraIssueComment",
+      "provider": "atlassian",
+      "product": "jira",
+      "surface": "mcp",
+      "operation": "addOrEditJiraIssueComment",
+      "summary": "Add a comment to a Jira work item, or edit one.",
+      "tags": [
+        "jira",
+        "write"
+      ],
+      "tool": {
+        "name": "addOrEditJiraIssueComment",
+        "server": "atlassian",
+        "server_url": "https://mcp.atlassian.com/v2/mcp",
+        "transport": "http",
+        "read_only": false
+      },
+      "params": {
+        "notes": "Argument names aren't listed on the supported tools page. Every call needs a cloudId from getAccessibleAtlassianResources. Read the rest from tools/list."
+      },
+      "auth": {
+        "methods": [
+          "oauth2"
+        ],
+        "scopes": [
+          "write:jira:agent-interface"
+        ],
+        "notes": "OAuth 2.1 sign-in. API-token auth is optional and set up by an admin. Admins grant tool groups per permission group."
+      },
+      "config": {
+        "generic": "{ \"mcpServers\": { \"atlassian\": { \"url\": \"https://mcp.atlassian.com/v2/mcp\" } } }\n",
+        "platforms": {
+          "claude-code": "claude mcp add --transport http atlassian https://mcp.atlassian.com/v2/mcp\n# then run /mcp in Claude Code to sign in\n",
+          "claude-desktop": "{ \"mcpServers\": { \"atlassian\": { \"url\": \"https://mcp.atlassian.com/v2/mcp\" } } }\n",
+          "codex": "codex mcp add atlassian --url https://mcp.atlassian.com/v2/mcp\n",
+          "windsurf": "{ \"mcpServers\": { \"atlassian\": { \"serverUrl\": \"https://mcp.atlassian.com/v2/mcp/\" } } }\n"
+        }
+      },
+      "source": {
+        "url": "https://support.atlassian.com/atlassian-rovo-mcp-server/docs/supported-tools/",
+        "also": [
+          "https://support.atlassian.com/atlassian-rovo-mcp-server/docs/getting-started-with-the-atlassian-remote-mcp-server/"
+        ],
+        "read_on": "2026-11-07",
+        "kind": "docs-page"
+      },
+      "status": "unverified",
+      "last_checked": "2026-11-07",
+      "notes": "The page says v1 traffic (https://mcp.atlassian.com/v1/mcp) moves to v2 on March 1, 2027. Use v2.",
+      "file": "calls/atlassian/mcp/atlassian.mcp.addOrEditJiraIssueComment.md",
+      "body": ""
+    },
+    {
+      "id": "atlassian.mcp.createJiraIssue",
+      "provider": "atlassian",
+      "product": "jira",
+      "surface": "mcp",
+      "operation": "createJiraIssue",
+      "summary": "Create a Jira work item.",
+      "tags": [
+        "jira",
+        "write"
+      ],
+      "tool": {
+        "name": "createJiraIssue",
+        "server": "atlassian",
+        "server_url": "https://mcp.atlassian.com/v2/mcp",
+        "transport": "http",
+        "read_only": false
+      },
+      "params": {
+        "notes": "Argument names aren't listed on the supported tools page. Every call needs a cloudId from getAccessibleAtlassianResources. Read the rest from tools/list."
+      },
+      "auth": {
+        "methods": [
+          "oauth2"
+        ],
+        "scopes": [
+          "write:jira:agent-interface"
+        ],
+        "notes": "OAuth 2.1 sign-in. API-token auth is optional and set up by an admin. Admins grant tool groups per permission group."
+      },
+      "config": {
+        "generic": "{ \"mcpServers\": { \"atlassian\": { \"url\": \"https://mcp.atlassian.com/v2/mcp\" } } }\n",
+        "platforms": {
+          "claude-code": "claude mcp add --transport http atlassian https://mcp.atlassian.com/v2/mcp\n# then run /mcp in Claude Code to sign in\n",
+          "claude-desktop": "{ \"mcpServers\": { \"atlassian\": { \"url\": \"https://mcp.atlassian.com/v2/mcp\" } } }\n",
+          "codex": "codex mcp add atlassian --url https://mcp.atlassian.com/v2/mcp\n",
+          "windsurf": "{ \"mcpServers\": { \"atlassian\": { \"serverUrl\": \"https://mcp.atlassian.com/v2/mcp/\" } } }\n"
+        }
+      },
+      "source": {
+        "url": "https://support.atlassian.com/atlassian-rovo-mcp-server/docs/supported-tools/",
+        "also": [
+          "https://support.atlassian.com/atlassian-rovo-mcp-server/docs/getting-started-with-the-atlassian-remote-mcp-server/"
+        ],
+        "read_on": "2026-11-07",
+        "kind": "docs-page"
+      },
+      "status": "unverified",
+      "last_checked": "2026-11-07",
+      "notes": "The page says v1 traffic (https://mcp.atlassian.com/v1/mcp) moves to v2 on March 1, 2027. Use v2.",
+      "file": "calls/atlassian/mcp/atlassian.mcp.createJiraIssue.md",
+      "body": ""
+    },
+    {
+      "id": "atlassian.mcp.getAccessibleAtlassianResources",
+      "provider": "atlassian",
+      "product": "platform",
+      "surface": "mcp",
+      "operation": "getAccessibleAtlassianResources",
+      "summary": "List the Atlassian sites you can reach and their cloudId. Required first call.",
+      "tags": [
+        "platform",
+        "read"
+      ],
+      "tool": {
+        "name": "getAccessibleAtlassianResources",
+        "server": "atlassian",
+        "server_url": "https://mcp.atlassian.com/v2/mcp",
+        "transport": "http",
+        "read_only": true
+      },
+      "params": {
+        "notes": "Argument names aren't listed on the supported tools page. Every call needs a cloudId from getAccessibleAtlassianResources. Read the rest from tools/list."
+      },
+      "auth": {
+        "methods": [
+          "oauth2"
+        ],
+        "notes": "OAuth 2.1 sign-in. API-token auth is optional and set up by an admin. Admins grant tool groups per permission group."
+      },
+      "config": {
+        "generic": "{ \"mcpServers\": { \"atlassian\": { \"url\": \"https://mcp.atlassian.com/v2/mcp\" } } }\n",
+        "platforms": {
+          "claude-code": "claude mcp add --transport http atlassian https://mcp.atlassian.com/v2/mcp\n# then run /mcp in Claude Code to sign in\n",
+          "claude-desktop": "{ \"mcpServers\": { \"atlassian\": { \"url\": \"https://mcp.atlassian.com/v2/mcp\" } } }\n",
+          "codex": "codex mcp add atlassian --url https://mcp.atlassian.com/v2/mcp\n",
+          "windsurf": "{ \"mcpServers\": { \"atlassian\": { \"serverUrl\": \"https://mcp.atlassian.com/v2/mcp/\" } } }\n"
+        }
+      },
+      "source": {
+        "url": "https://support.atlassian.com/atlassian-rovo-mcp-server/docs/supported-tools/",
+        "also": [
+          "https://support.atlassian.com/atlassian-rovo-mcp-server/docs/getting-started-with-the-atlassian-remote-mcp-server/"
+        ],
+        "read_on": "2026-11-07",
+        "kind": "docs-page"
+      },
+      "status": "unverified",
+      "last_checked": "2026-11-07",
+      "notes": "The page says v1 traffic (https://mcp.atlassian.com/v1/mcp) moves to v2 on March 1, 2027. Use v2.",
+      "file": "calls/atlassian/mcp/atlassian.mcp.getAccessibleAtlassianResources.md",
+      "body": ""
+    },
+    {
+      "id": "atlassian.mcp.getConfluenceContent",
+      "provider": "atlassian",
+      "product": "confluence",
+      "surface": "mcp",
+      "operation": "getConfluenceContent",
+      "summary": "Get Confluence content.",
+      "tags": [
+        "confluence",
+        "read"
+      ],
+      "tool": {
+        "name": "getConfluenceContent",
+        "server": "atlassian",
+        "server_url": "https://mcp.atlassian.com/v2/mcp",
+        "transport": "http",
+        "read_only": true
+      },
+      "params": {
+        "notes": "Argument names aren't listed on the supported tools page. Every call needs a cloudId from getAccessibleAtlassianResources. Read the rest from tools/list."
+      },
+      "auth": {
+        "methods": [
+          "oauth2"
+        ],
+        "scopes": [
+          "read:confluence:agent-interface"
+        ],
+        "notes": "OAuth 2.1 sign-in. API-token auth is optional and set up by an admin. Admins grant tool groups per permission group."
+      },
+      "config": {
+        "generic": "{ \"mcpServers\": { \"atlassian\": { \"url\": \"https://mcp.atlassian.com/v2/mcp\" } } }\n",
+        "platforms": {
+          "claude-code": "claude mcp add --transport http atlassian https://mcp.atlassian.com/v2/mcp\n# then run /mcp in Claude Code to sign in\n",
+          "claude-desktop": "{ \"mcpServers\": { \"atlassian\": { \"url\": \"https://mcp.atlassian.com/v2/mcp\" } } }\n",
+          "codex": "codex mcp add atlassian --url https://mcp.atlassian.com/v2/mcp\n",
+          "windsurf": "{ \"mcpServers\": { \"atlassian\": { \"serverUrl\": \"https://mcp.atlassian.com/v2/mcp/\" } } }\n"
+        }
+      },
+      "source": {
+        "url": "https://support.atlassian.com/atlassian-rovo-mcp-server/docs/supported-tools/",
+        "also": [
+          "https://support.atlassian.com/atlassian-rovo-mcp-server/docs/getting-started-with-the-atlassian-remote-mcp-server/"
+        ],
+        "read_on": "2026-11-07",
+        "kind": "docs-page"
+      },
+      "status": "unverified",
+      "last_checked": "2026-11-07",
+      "notes": "The page says v1 traffic (https://mcp.atlassian.com/v1/mcp) moves to v2 on March 1, 2027. Use v2.",
+      "file": "calls/atlassian/mcp/atlassian.mcp.getConfluenceContent.md",
+      "body": ""
+    },
+    {
+      "id": "atlassian.mcp.getJiraIssue",
+      "provider": "atlassian",
+      "product": "jira",
+      "surface": "mcp",
+      "operation": "getJiraIssue",
+      "summary": "Get one Jira work item.",
+      "tags": [
+        "jira",
+        "read"
+      ],
+      "tool": {
+        "name": "getJiraIssue",
+        "server": "atlassian",
+        "server_url": "https://mcp.atlassian.com/v2/mcp",
+        "transport": "http",
+        "read_only": true
+      },
+      "params": {
+        "notes": "Argument names aren't listed on the supported tools page. Every call needs a cloudId from getAccessibleAtlassianResources. Read the rest from tools/list."
+      },
+      "auth": {
+        "methods": [
+          "oauth2"
+        ],
+        "scopes": [
+          "read:jira:agent-interface"
+        ],
+        "notes": "OAuth 2.1 sign-in. API-token auth is optional and set up by an admin. Admins grant tool groups per permission group."
+      },
+      "config": {
+        "generic": "{ \"mcpServers\": { \"atlassian\": { \"url\": \"https://mcp.atlassian.com/v2/mcp\" } } }\n",
+        "platforms": {
+          "claude-code": "claude mcp add --transport http atlassian https://mcp.atlassian.com/v2/mcp\n# then run /mcp in Claude Code to sign in\n",
+          "claude-desktop": "{ \"mcpServers\": { \"atlassian\": { \"url\": \"https://mcp.atlassian.com/v2/mcp\" } } }\n",
+          "codex": "codex mcp add atlassian --url https://mcp.atlassian.com/v2/mcp\n",
+          "windsurf": "{ \"mcpServers\": { \"atlassian\": { \"serverUrl\": \"https://mcp.atlassian.com/v2/mcp/\" } } }\n"
+        }
+      },
+      "source": {
+        "url": "https://support.atlassian.com/atlassian-rovo-mcp-server/docs/supported-tools/",
+        "also": [
+          "https://support.atlassian.com/atlassian-rovo-mcp-server/docs/getting-started-with-the-atlassian-remote-mcp-server/"
+        ],
+        "read_on": "2026-11-07",
+        "kind": "docs-page"
+      },
+      "status": "unverified",
+      "last_checked": "2026-11-07",
+      "notes": "The page says v1 traffic (https://mcp.atlassian.com/v1/mcp) moves to v2 on March 1, 2027. Use v2.",
+      "file": "calls/atlassian/mcp/atlassian.mcp.getJiraIssue.md",
+      "body": ""
+    },
+    {
+      "id": "atlassian.mcp.searchConfluence",
+      "provider": "atlassian",
+      "product": "confluence",
+      "surface": "mcp",
+      "operation": "searchConfluence",
+      "summary": "Search Confluence content with CQL.",
+      "tags": [
+        "confluence",
+        "read"
+      ],
+      "tool": {
+        "name": "searchConfluence",
+        "server": "atlassian",
+        "server_url": "https://mcp.atlassian.com/v2/mcp",
+        "transport": "http",
+        "read_only": true
+      },
+      "params": {
+        "notes": "Argument names aren't listed on the supported tools page. Every call needs a cloudId from getAccessibleAtlassianResources. Read the rest from tools/list."
+      },
+      "auth": {
+        "methods": [
+          "oauth2"
+        ],
+        "scopes": [
+          "search:confluence:agent-interface"
+        ],
+        "notes": "OAuth 2.1 sign-in. API-token auth is optional and set up by an admin. Admins grant tool groups per permission group."
+      },
+      "config": {
+        "generic": "{ \"mcpServers\": { \"atlassian\": { \"url\": \"https://mcp.atlassian.com/v2/mcp\" } } }\n",
+        "platforms": {
+          "claude-code": "claude mcp add --transport http atlassian https://mcp.atlassian.com/v2/mcp\n# then run /mcp in Claude Code to sign in\n",
+          "claude-desktop": "{ \"mcpServers\": { \"atlassian\": { \"url\": \"https://mcp.atlassian.com/v2/mcp\" } } }\n",
+          "codex": "codex mcp add atlassian --url https://mcp.atlassian.com/v2/mcp\n",
+          "windsurf": "{ \"mcpServers\": { \"atlassian\": { \"serverUrl\": \"https://mcp.atlassian.com/v2/mcp/\" } } }\n"
+        }
+      },
+      "source": {
+        "url": "https://support.atlassian.com/atlassian-rovo-mcp-server/docs/supported-tools/",
+        "also": [
+          "https://support.atlassian.com/atlassian-rovo-mcp-server/docs/getting-started-with-the-atlassian-remote-mcp-server/"
+        ],
+        "read_on": "2026-11-07",
+        "kind": "docs-page"
+      },
+      "status": "unverified",
+      "last_checked": "2026-11-07",
+      "notes": "The page says v1 traffic (https://mcp.atlassian.com/v1/mcp) moves to v2 on March 1, 2027. Use v2.",
+      "file": "calls/atlassian/mcp/atlassian.mcp.searchConfluence.md",
+      "body": ""
+    },
+    {
+      "id": "atlassian.mcp.searchJiraIssuesUsingJql",
+      "provider": "atlassian",
+      "product": "jira",
+      "surface": "mcp",
+      "operation": "searchJiraIssuesUsingJql",
+      "summary": "Search Jira work items with JQL.",
+      "tags": [
+        "jira",
+        "read"
+      ],
+      "tool": {
+        "name": "searchJiraIssuesUsingJql",
+        "server": "atlassian",
+        "server_url": "https://mcp.atlassian.com/v2/mcp",
+        "transport": "http",
+        "read_only": true
+      },
+      "params": {
+        "notes": "Argument names aren't listed on the supported tools page. Every call needs a cloudId from getAccessibleAtlassianResources. Read the rest from tools/list."
+      },
+      "auth": {
+        "methods": [
+          "oauth2"
+        ],
+        "scopes": [
+          "search:jira:agent-interface"
+        ],
+        "notes": "OAuth 2.1 sign-in. API-token auth is optional and set up by an admin. Admins grant tool groups per permission group."
+      },
+      "config": {
+        "generic": "{ \"mcpServers\": { \"atlassian\": { \"url\": \"https://mcp.atlassian.com/v2/mcp\" } } }\n",
+        "platforms": {
+          "claude-code": "claude mcp add --transport http atlassian https://mcp.atlassian.com/v2/mcp\n# then run /mcp in Claude Code to sign in\n",
+          "claude-desktop": "{ \"mcpServers\": { \"atlassian\": { \"url\": \"https://mcp.atlassian.com/v2/mcp\" } } }\n",
+          "codex": "codex mcp add atlassian --url https://mcp.atlassian.com/v2/mcp\n",
+          "windsurf": "{ \"mcpServers\": { \"atlassian\": { \"serverUrl\": \"https://mcp.atlassian.com/v2/mcp/\" } } }\n"
+        }
+      },
+      "source": {
+        "url": "https://support.atlassian.com/atlassian-rovo-mcp-server/docs/supported-tools/",
+        "also": [
+          "https://support.atlassian.com/atlassian-rovo-mcp-server/docs/getting-started-with-the-atlassian-remote-mcp-server/"
+        ],
+        "read_on": "2026-11-07",
+        "kind": "docs-page"
+      },
+      "status": "unverified",
+      "last_checked": "2026-11-07",
+      "notes": "The page says v1 traffic (https://mcp.atlassian.com/v1/mcp) moves to v2 on March 1, 2027. Use v2.",
+      "file": "calls/atlassian/mcp/atlassian.mcp.searchJiraIssuesUsingJql.md",
+      "body": ""
+    },
     {
       "id": "google-workspace.api.calendar.events.insert",
       "provider": "google-workspace",
