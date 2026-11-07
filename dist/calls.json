@@ -1,8 +1,8 @@
 {
   "schema": "schema/call.schema.json",
-  "count": 30,
+  "count": 40,
   "counts": {
-    "unverified": 30
+    "unverified": 40
   },
   "calls": [
     {
@@ -372,6 +372,639 @@
       "notes": "The page says v1 traffic (https://mcp.atlassian.com/v1/mcp) moves to v2 on March 1, 2027. Use v2.",
       "file": "calls/atlassian/mcp/atlassian.mcp.searchJiraIssuesUsingJql.md",
       "body": ""
+    },
+    {
+      "id": "figma.api.getComments",
+      "provider": "figma",
+      "surface": "api",
+      "operation": "getComments",
+      "summary": "List comments on a file.",
+      "tags": [
+        "comments",
+        "read"
+      ],
+      "endpoint": {
+        "method": "GET",
+        "url": "https://api.figma.com/v1/files/{file_key}/comments"
+      },
+      "params": {
+        "required": [
+          "file_key"
+        ],
+        "optional": [
+          "as_md"
+        ]
+      },
+      "auth": {
+        "methods": [
+          "personal-access-token",
+          "plan-access-token",
+          "oauth2"
+        ],
+        "header": "X-Figma-Token: <FIGMA_TOKEN>",
+        "scopes": [
+          "file_comments:read",
+          "files:read"
+        ],
+        "scopes_mode": "any",
+        "least_privilege_scope": "file_comments:read",
+        "notes": "files:read is deprecated; use file_comments:read."
+      },
+      "config": {
+        "generic": "curl -s -H \"X-Figma-Token: $FIGMA_TOKEN\" \"https://api.figma.com/v1/files/$FILE_KEY/comments?as_md=true\"\n"
+      },
+      "rate_limit": {
+        "tier": "Tier 2",
+        "notes": "Per-minute limits depend on seat (View/Collab vs Dev/Full) and plan. On 429, wait Retry-After seconds. Headers X-Figma-Plan-Tier and X-Figma-Rate-Limit-Type say which limit you hit.",
+        "source_url": "https://developers.figma.com/docs/rest-api/rate-limits/"
+      },
+      "errors": [
+        {
+          "code": "429",
+          "meaning": "Rate limited (leaky bucket).",
+          "fix": "Wait the Retry-After seconds, then retry with backoff.",
+          "fix_status": "unverified"
+        },
+        {
+          "code": "403",
+          "meaning": "Forbidden. Token lacks the scope or access to the file.",
+          "fix_status": "none"
+        }
+      ],
+      "source": {
+        "url": "https://raw.githubusercontent.com/figma/rest-api-spec/main/openapi/openapi.yaml",
+        "also": [
+          "https://developers.figma.com/docs/rest-api/scopes/",
+          "https://developers.figma.com/docs/rest-api/rate-limits/"
+        ],
+        "read_on": "2026-11-07",
+        "kind": "openapi",
+        "spec_revision": "0.47.0"
+      },
+      "status": "unverified",
+      "last_checked": "2026-11-07",
+      "file": "calls/figma/api/figma.api.getComments.md",
+      "body": ""
+    },
+    {
+      "id": "figma.api.getFile",
+      "provider": "figma",
+      "surface": "api",
+      "operation": "getFile",
+      "summary": "Get a file's document tree as JSON.",
+      "tags": [
+        "files",
+        "read"
+      ],
+      "endpoint": {
+        "method": "GET",
+        "url": "https://api.figma.com/v1/files/{file_key}"
+      },
+      "params": {
+        "required": [
+          "file_key"
+        ],
+        "optional": [
+          "ids",
+          "depth",
+          "version",
+          "geometry",
+          "plugin_data",
+          "branch_data"
+        ],
+        "notes": "Use depth to avoid pulling the whole tree on big files."
+      },
+      "auth": {
+        "methods": [
+          "personal-access-token",
+          "plan-access-token",
+          "oauth2"
+        ],
+        "header": "X-Figma-Token: <FIGMA_TOKEN>",
+        "scopes": [
+          "file_content:read",
+          "files:read"
+        ],
+        "scopes_mode": "any",
+        "least_privilege_scope": "file_content:read",
+        "notes": "files:read is deprecated; use file_content:read."
+      },
+      "config": {
+        "generic": "curl -s -H \"X-Figma-Token: $FIGMA_TOKEN\" \"https://api.figma.com/v1/files/$FILE_KEY?depth=1\"\n"
+      },
+      "rate_limit": {
+        "tier": "Tier 1",
+        "notes": "Per-minute limits depend on seat (View/Collab vs Dev/Full) and plan. On 429, wait Retry-After seconds. Headers X-Figma-Plan-Tier and X-Figma-Rate-Limit-Type say which limit you hit.",
+        "source_url": "https://developers.figma.com/docs/rest-api/rate-limits/"
+      },
+      "errors": [
+        {
+          "code": "429",
+          "meaning": "Rate limited (leaky bucket).",
+          "fix": "Wait the Retry-After seconds, then retry with backoff.",
+          "fix_status": "unverified"
+        },
+        {
+          "code": "403",
+          "meaning": "Forbidden. Token lacks the scope or access to the file.",
+          "fix_status": "none"
+        }
+      ],
+      "source": {
+        "url": "https://raw.githubusercontent.com/figma/rest-api-spec/main/openapi/openapi.yaml",
+        "also": [
+          "https://developers.figma.com/docs/rest-api/scopes/",
+          "https://developers.figma.com/docs/rest-api/rate-limits/"
+        ],
+        "read_on": "2026-11-07",
+        "kind": "openapi",
+        "spec_revision": "0.47.0"
+      },
+      "status": "unverified",
+      "last_checked": "2026-11-07",
+      "file": "calls/figma/api/figma.api.getFile.md",
+      "body": ""
+    },
+    {
+      "id": "figma.api.getFileNodes",
+      "provider": "figma",
+      "surface": "api",
+      "operation": "getFileNodes",
+      "summary": "Get JSON for specific nodes in a file.",
+      "tags": [
+        "files",
+        "read"
+      ],
+      "endpoint": {
+        "method": "GET",
+        "url": "https://api.figma.com/v1/files/{file_key}/nodes"
+      },
+      "params": {
+        "required": [
+          "file_key",
+          "ids"
+        ],
+        "optional": [
+          "depth",
+          "version",
+          "geometry",
+          "plugin_data"
+        ],
+        "notes": "ids is a comma-separated list of node IDs."
+      },
+      "auth": {
+        "methods": [
+          "personal-access-token",
+          "plan-access-token",
+          "oauth2"
+        ],
+        "header": "X-Figma-Token: <FIGMA_TOKEN>",
+        "scopes": [
+          "file_content:read",
+          "files:read"
+        ],
+        "scopes_mode": "any",
+        "least_privilege_scope": "file_content:read",
+        "notes": "files:read is deprecated; use file_content:read."
+      },
+      "config": {
+        "generic": "curl -s -H \"X-Figma-Token: $FIGMA_TOKEN\" \"https://api.figma.com/v1/files/$FILE_KEY/nodes?ids=1:2\"\n"
+      },
+      "errors": [
+        {
+          "code": "429",
+          "meaning": "Rate limited (leaky bucket).",
+          "fix": "Wait the Retry-After seconds, then retry with backoff.",
+          "fix_status": "unverified"
+        },
+        {
+          "code": "403",
+          "meaning": "Forbidden. Token lacks the scope or access to the file.",
+          "fix_status": "none"
+        }
+      ],
+      "source": {
+        "url": "https://raw.githubusercontent.com/figma/rest-api-spec/main/openapi/openapi.yaml",
+        "also": [
+          "https://developers.figma.com/docs/rest-api/scopes/",
+          "https://developers.figma.com/docs/rest-api/rate-limits/"
+        ],
+        "read_on": "2026-11-07",
+        "kind": "openapi",
+        "spec_revision": "0.47.0"
+      },
+      "status": "unverified",
+      "last_checked": "2026-11-07",
+      "file": "calls/figma/api/figma.api.getFileNodes.md",
+      "body": "The rate-limit tier for this endpoint isn't named on the rate limits page summary we read, so it's left blank."
+    },
+    {
+      "id": "figma.api.getImages",
+      "provider": "figma",
+      "surface": "api",
+      "operation": "getImages",
+      "summary": "Render nodes as images and get download URLs.",
+      "tags": [
+        "files",
+        "images",
+        "read"
+      ],
+      "endpoint": {
+        "method": "GET",
+        "url": "https://api.figma.com/v1/images/{file_key}"
+      },
+      "params": {
+        "required": [
+          "file_key",
+          "ids"
+        ],
+        "optional": [
+          "scale",
+          "format",
+          "version",
+          "svg_outline_text",
+          "svg_include_id",
+          "svg_include_node_id",
+          "svg_simplify_stroke",
+          "contents_only",
+          "use_absolute_bounds"
+        ]
+      },
+      "auth": {
+        "methods": [
+          "personal-access-token",
+          "plan-access-token",
+          "oauth2"
+        ],
+        "header": "X-Figma-Token: <FIGMA_TOKEN>",
+        "scopes": [
+          "file_content:read",
+          "files:read"
+        ],
+        "scopes_mode": "any",
+        "least_privilege_scope": "file_content:read",
+        "notes": "files:read is deprecated; use file_content:read."
+      },
+      "config": {
+        "generic": "curl -s -H \"X-Figma-Token: $FIGMA_TOKEN\" \"https://api.figma.com/v1/images/$FILE_KEY?ids=1:2&format=png&scale=2\"\n"
+      },
+      "rate_limit": {
+        "tier": "Tier 1",
+        "notes": "Per-minute limits depend on seat (View/Collab vs Dev/Full) and plan. On 429, wait Retry-After seconds. Headers X-Figma-Plan-Tier and X-Figma-Rate-Limit-Type say which limit you hit.",
+        "source_url": "https://developers.figma.com/docs/rest-api/rate-limits/"
+      },
+      "errors": [
+        {
+          "code": "429",
+          "meaning": "Rate limited (leaky bucket).",
+          "fix": "Wait the Retry-After seconds, then retry with backoff.",
+          "fix_status": "unverified"
+        },
+        {
+          "code": "403",
+          "meaning": "Forbidden. Token lacks the scope or access to the file.",
+          "fix_status": "none"
+        }
+      ],
+      "source": {
+        "url": "https://raw.githubusercontent.com/figma/rest-api-spec/main/openapi/openapi.yaml",
+        "also": [
+          "https://developers.figma.com/docs/rest-api/scopes/",
+          "https://developers.figma.com/docs/rest-api/rate-limits/"
+        ],
+        "read_on": "2026-11-07",
+        "kind": "openapi",
+        "spec_revision": "0.47.0"
+      },
+      "status": "unverified",
+      "last_checked": "2026-11-07",
+      "file": "calls/figma/api/figma.api.getImages.md",
+      "body": ""
+    },
+    {
+      "id": "figma.api.getMe",
+      "provider": "figma",
+      "surface": "api",
+      "operation": "getMe",
+      "summary": "Get the user the token belongs to. Cheapest auth check.",
+      "tags": [
+        "users",
+        "read"
+      ],
+      "endpoint": {
+        "method": "GET",
+        "url": "https://api.figma.com/v1/me"
+      },
+      "auth": {
+        "methods": [
+          "personal-access-token",
+          "oauth2"
+        ],
+        "header": "X-Figma-Token: <FIGMA_TOKEN>",
+        "scopes": [
+          "current_user:read",
+          "files:read"
+        ],
+        "scopes_mode": "any",
+        "least_privilege_scope": "current_user:read"
+      },
+      "config": {
+        "generic": "curl -s -H \"X-Figma-Token: $FIGMA_TOKEN\" https://api.figma.com/v1/me\n"
+      },
+      "source": {
+        "url": "https://raw.githubusercontent.com/figma/rest-api-spec/main/openapi/openapi.yaml",
+        "also": [
+          "https://developers.figma.com/docs/rest-api/scopes/",
+          "https://developers.figma.com/docs/rest-api/rate-limits/"
+        ],
+        "read_on": "2026-11-07",
+        "kind": "openapi",
+        "spec_revision": "0.47.0"
+      },
+      "status": "unverified",
+      "last_checked": "2026-11-07",
+      "file": "calls/figma/api/figma.api.getMe.md",
+      "body": ""
+    },
+    {
+      "id": "figma.api.postComment",
+      "provider": "figma",
+      "surface": "api",
+      "operation": "postComment",
+      "summary": "Add a comment (or a reply) to a file.",
+      "tags": [
+        "comments",
+        "write"
+      ],
+      "endpoint": {
+        "method": "POST",
+        "url": "https://api.figma.com/v1/files/{file_key}/comments",
+        "content_types": [
+          "application/json"
+        ]
+      },
+      "params": {
+        "required": [
+          "file_key",
+          "message"
+        ],
+        "optional": [
+          "comment_id",
+          "client_meta"
+        ],
+        "notes": "comment_id makes it a reply. client_meta pins it to a position or node."
+      },
+      "auth": {
+        "methods": [
+          "personal-access-token",
+          "oauth2"
+        ],
+        "header": "X-Figma-Token: <FIGMA_TOKEN>",
+        "scopes": [
+          "file_comments:write"
+        ],
+        "scopes_mode": "all",
+        "notes": "Plan access tokens are not listed for this endpoint in the spec."
+      },
+      "config": {
+        "generic": "curl -s -X POST -H \"X-Figma-Token: $FIGMA_TOKEN\" -H \"Content-Type: application/json\" \\\n  -d '{\"message\":\"Looks good\"}' \"https://api.figma.com/v1/files/$FILE_KEY/comments\"\n"
+      },
+      "rate_limit": {
+        "tier": "Tier 2",
+        "notes": "Per-minute limits depend on seat (View/Collab vs Dev/Full) and plan. On 429, wait Retry-After seconds. Headers X-Figma-Plan-Tier and X-Figma-Rate-Limit-Type say which limit you hit.",
+        "source_url": "https://developers.figma.com/docs/rest-api/rate-limits/"
+      },
+      "errors": [
+        {
+          "code": "429",
+          "meaning": "Rate limited (leaky bucket).",
+          "fix": "Wait the Retry-After seconds, then retry with backoff.",
+          "fix_status": "unverified"
+        },
+        {
+          "code": "403",
+          "meaning": "Forbidden. Token lacks the scope or access to the file.",
+          "fix_status": "none"
+        }
+      ],
+      "source": {
+        "url": "https://raw.githubusercontent.com/figma/rest-api-spec/main/openapi/openapi.yaml",
+        "also": [
+          "https://developers.figma.com/docs/rest-api/scopes/",
+          "https://developers.figma.com/docs/rest-api/rate-limits/"
+        ],
+        "read_on": "2026-11-07",
+        "kind": "openapi",
+        "spec_revision": "0.47.0"
+      },
+      "status": "unverified",
+      "last_checked": "2026-11-07",
+      "file": "calls/figma/api/figma.api.postComment.md",
+      "body": ""
+    },
+    {
+      "id": "figma.mcp.get_design_context",
+      "provider": "figma",
+      "surface": "mcp",
+      "operation": "get_design_context",
+      "summary": "Get design context and code for a layer or selection.",
+      "tags": [
+        "design",
+        "read"
+      ],
+      "tool": {
+        "name": "get_design_context",
+        "server": "figma",
+        "server_url": "https://mcp.figma.com/mcp",
+        "transport": "http",
+        "read_only": true
+      },
+      "params": {
+        "notes": "Argument names aren't listed on the tools page. Read them from the server's tools/list, then fill this in."
+      },
+      "auth": {
+        "methods": [
+          "oauth2"
+        ],
+        "notes": "Sign in with Figma on first connect and click Allow access. The MCP server runs its own OAuth; no REST scopes to set. Only clients in the Figma MCP catalog can connect to the remote server."
+      },
+      "config": {
+        "generic": "{\n  \"mcpServers\": {\n    \"figma\": { \"url\": \"https://mcp.figma.com/mcp\" }\n  }\n}\n",
+        "platforms": {
+          "claude-code": "claude mcp add --transport http figma https://mcp.figma.com/mcp\n",
+          "vscode": "{\n  \"inputs\": [],\n  \"servers\": {\n    \"figma\": { \"url\": \"https://mcp.figma.com/mcp\", \"type\": \"http\" }\n  }\n}\n",
+          "cursor": "{ \"mcpServers\": { \"figma\": { \"url\": \"https://mcp.figma.com/mcp\" } } }\n",
+          "codex": "codex mcp add figma --url https://mcp.figma.com/mcp\n"
+        }
+      },
+      "source": {
+        "url": "https://developers.figma.com/docs/figma-mcp-server/tools-and-prompts/",
+        "also": [
+          "https://developers.figma.com/docs/figma-mcp-server/",
+          "https://developers.figma.com/docs/figma-mcp-server/remote-server-installation/",
+          "https://developers.figma.com/docs/figma-mcp-server/local-server-installation/"
+        ],
+        "read_on": "2026-11-07",
+        "kind": "docs-page"
+      },
+      "status": "unverified",
+      "last_checked": "2026-11-07",
+      "notes": "Available on remote and desktop servers.",
+      "file": "calls/figma/mcp/figma.mcp.get_design_context.md",
+      "body": "The desktop server (http://127.0.0.1:3845/mcp, server name figma-desktop) needs the Figma desktop app and a Dev or Full seat on a paid plan. Add it with: claude mcp add --transport http figma-desktop http://127.0.0.1:3845/mcp"
+    },
+    {
+      "id": "figma.mcp.get_metadata",
+      "provider": "figma",
+      "surface": "mcp",
+      "operation": "get_metadata",
+      "summary": "Get a lightweight XML outline of a selection.",
+      "tags": [
+        "design",
+        "read"
+      ],
+      "tool": {
+        "name": "get_metadata",
+        "server": "figma",
+        "server_url": "https://mcp.figma.com/mcp",
+        "transport": "http",
+        "read_only": true
+      },
+      "params": {
+        "notes": "Argument names aren't listed on the tools page. Read them from the server's tools/list, then fill this in."
+      },
+      "auth": {
+        "methods": [
+          "oauth2"
+        ],
+        "notes": "Sign in with Figma on first connect and click Allow access. The MCP server runs its own OAuth; no REST scopes to set. Only clients in the Figma MCP catalog can connect to the remote server."
+      },
+      "config": {
+        "generic": "{\n  \"mcpServers\": {\n    \"figma\": { \"url\": \"https://mcp.figma.com/mcp\" }\n  }\n}\n",
+        "platforms": {
+          "claude-code": "claude mcp add --transport http figma https://mcp.figma.com/mcp\n",
+          "vscode": "{\n  \"inputs\": [],\n  \"servers\": {\n    \"figma\": { \"url\": \"https://mcp.figma.com/mcp\", \"type\": \"http\" }\n  }\n}\n",
+          "cursor": "{ \"mcpServers\": { \"figma\": { \"url\": \"https://mcp.figma.com/mcp\" } } }\n",
+          "codex": "codex mcp add figma --url https://mcp.figma.com/mcp\n"
+        }
+      },
+      "source": {
+        "url": "https://developers.figma.com/docs/figma-mcp-server/tools-and-prompts/",
+        "also": [
+          "https://developers.figma.com/docs/figma-mcp-server/",
+          "https://developers.figma.com/docs/figma-mcp-server/remote-server-installation/",
+          "https://developers.figma.com/docs/figma-mcp-server/local-server-installation/"
+        ],
+        "read_on": "2026-11-07",
+        "kind": "docs-page"
+      },
+      "status": "unverified",
+      "last_checked": "2026-11-07",
+      "notes": "Available on remote and desktop servers.",
+      "file": "calls/figma/mcp/figma.mcp.get_metadata.md",
+      "body": "The desktop server (http://127.0.0.1:3845/mcp, server name figma-desktop) needs the Figma desktop app and a Dev or Full seat on a paid plan. Add it with: claude mcp add --transport http figma-desktop http://127.0.0.1:3845/mcp"
+    },
+    {
+      "id": "figma.mcp.get_screenshot",
+      "provider": "figma",
+      "surface": "mcp",
+      "operation": "get_screenshot",
+      "summary": "Take a screenshot of a selection.",
+      "tags": [
+        "design",
+        "read"
+      ],
+      "tool": {
+        "name": "get_screenshot",
+        "server": "figma",
+        "server_url": "https://mcp.figma.com/mcp",
+        "transport": "http",
+        "read_only": true
+      },
+      "params": {
+        "notes": "Argument names aren't listed on the tools page. Read them from the server's tools/list, then fill this in."
+      },
+      "auth": {
+        "methods": [
+          "oauth2"
+        ],
+        "notes": "Sign in with Figma on first connect and click Allow access. The MCP server runs its own OAuth; no REST scopes to set. Only clients in the Figma MCP catalog can connect to the remote server."
+      },
+      "config": {
+        "generic": "{\n  \"mcpServers\": {\n    \"figma\": { \"url\": \"https://mcp.figma.com/mcp\" }\n  }\n}\n",
+        "platforms": {
+          "claude-code": "claude mcp add --transport http figma https://mcp.figma.com/mcp\n",
+          "vscode": "{\n  \"inputs\": [],\n  \"servers\": {\n    \"figma\": { \"url\": \"https://mcp.figma.com/mcp\", \"type\": \"http\" }\n  }\n}\n",
+          "cursor": "{ \"mcpServers\": { \"figma\": { \"url\": \"https://mcp.figma.com/mcp\" } } }\n",
+          "codex": "codex mcp add figma --url https://mcp.figma.com/mcp\n"
+        }
+      },
+      "source": {
+        "url": "https://developers.figma.com/docs/figma-mcp-server/tools-and-prompts/",
+        "also": [
+          "https://developers.figma.com/docs/figma-mcp-server/",
+          "https://developers.figma.com/docs/figma-mcp-server/remote-server-installation/",
+          "https://developers.figma.com/docs/figma-mcp-server/local-server-installation/"
+        ],
+        "read_on": "2026-11-07",
+        "kind": "docs-page"
+      },
+      "status": "unverified",
+      "last_checked": "2026-11-07",
+      "notes": "Available on remote and desktop servers.",
+      "file": "calls/figma/mcp/figma.mcp.get_screenshot.md",
+      "body": "The desktop server (http://127.0.0.1:3845/mcp, server name figma-desktop) needs the Figma desktop app and a Dev or Full seat on a paid plan. Add it with: claude mcp add --transport http figma-desktop http://127.0.0.1:3845/mcp"
+    },
+    {
+      "id": "figma.mcp.get_variable_defs",
+      "provider": "figma",
+      "surface": "mcp",
+      "operation": "get_variable_defs",
+      "summary": "List the variables and styles used in a selection.",
+      "tags": [
+        "design",
+        "read"
+      ],
+      "tool": {
+        "name": "get_variable_defs",
+        "server": "figma",
+        "server_url": "https://mcp.figma.com/mcp",
+        "transport": "http",
+        "read_only": true
+      },
+      "params": {
+        "notes": "Argument names aren't listed on the tools page. Read them from the server's tools/list, then fill this in."
+      },
+      "auth": {
+        "methods": [
+          "oauth2"
+        ],
+        "notes": "Sign in with Figma on first connect and click Allow access. The MCP server runs its own OAuth; no REST scopes to set. Only clients in the Figma MCP catalog can connect to the remote server."
+      },
+      "config": {
+        "generic": "{\n  \"mcpServers\": {\n    \"figma\": { \"url\": \"https://mcp.figma.com/mcp\" }\n  }\n}\n",
+        "platforms": {
+          "claude-code": "claude mcp add --transport http figma https://mcp.figma.com/mcp\n",
+          "vscode": "{\n  \"inputs\": [],\n  \"servers\": {\n    \"figma\": { \"url\": \"https://mcp.figma.com/mcp\", \"type\": \"http\" }\n  }\n}\n",
+          "cursor": "{ \"mcpServers\": { \"figma\": { \"url\": \"https://mcp.figma.com/mcp\" } } }\n",
+          "codex": "codex mcp add figma --url https://mcp.figma.com/mcp\n"
+        }
+      },
+      "source": {
+        "url": "https://developers.figma.com/docs/figma-mcp-server/tools-and-prompts/",
+        "also": [
+          "https://developers.figma.com/docs/figma-mcp-server/",
+          "https://developers.figma.com/docs/figma-mcp-server/remote-server-installation/",
+          "https://developers.figma.com/docs/figma-mcp-server/local-server-installation/"
+        ],
+        "read_on": "2026-11-07",
+        "kind": "docs-page"
+      },
+      "status": "unverified",
+      "last_checked": "2026-11-07",
+      "notes": "Available on remote and desktop servers.",
+      "file": "calls/figma/mcp/figma.mcp.get_variable_defs.md",
+      "body": "The desktop server (http://127.0.0.1:3845/mcp, server name figma-desktop) needs the Figma desktop app and a Dev or Full seat on a paid plan. Add it with: claude mcp add --transport http figma-desktop http://127.0.0.1:3845/mcp"
     },
     {
       "id": "github.api.issues.create",
