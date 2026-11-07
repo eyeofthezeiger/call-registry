@@ -1,8 +1,8 @@
 {
   "schema": "schema/call.schema.json",
-  "count": 16,
+  "count": 21,
   "counts": {
-    "unverified": 16
+    "unverified": 21
   },
   "calls": [
     {
@@ -889,6 +889,402 @@
       "status": "unverified",
       "last_checked": "2026-11-07",
       "file": "calls/google-workspace/api/google-workspace.api.sheets.spreadsheets.values.get.md",
+      "body": ""
+    },
+    {
+      "id": "slack.api.chat.postMessage",
+      "provider": "slack",
+      "surface": "api",
+      "operation": "chat.postMessage",
+      "summary": "Post a message to a channel, DM or thread.",
+      "tags": [
+        "messaging",
+        "write"
+      ],
+      "endpoint": {
+        "method": "POST",
+        "url": "https://slack.com/api/chat.postMessage",
+        "content_types": [
+          "application/x-www-form-urlencoded",
+          "application/json"
+        ]
+      },
+      "params": {
+        "required": [
+          "token",
+          "channel"
+        ],
+        "optional": [
+          "text",
+          "blocks",
+          "thread_ts",
+          "reply_broadcast",
+          "markdown_text"
+        ],
+        "notes": "Pass the token as a Bearer header. markdown_text max 12,000 chars; keep text under 4,000. Use thread_ts to reply in a thread."
+      },
+      "auth": {
+        "methods": [
+          "bot-token",
+          "user-token"
+        ],
+        "header": "Authorization: Bearer <SLACK_TOKEN>",
+        "scopes": [
+          "chat:write"
+        ],
+        "scopes_mode": "all",
+        "notes": "Same scope for bot and user tokens. Bots need chat:write.public to post in public channels they haven't joined. Bots can't post into a DM between two users."
+      },
+      "config": {
+        "generic": "curl -s -X POST https://slack.com/api/chat.postMessage \\\n  -H \"Authorization: Bearer $SLACK_TOKEN\" -H \"Content-Type: application/json; charset=utf-8\" \\\n  -d '{\"channel\":\"C0123456789\",\"text\":\"Hello from the registry\"}'\n"
+      },
+      "rate_limit": {
+        "tier": "Special",
+        "notes": "Generally about 1 message per second per channel."
+      },
+      "errors": [
+        {
+          "code": "not_in_channel",
+          "meaning": "Cannot post user messages to a channel they are not in.",
+          "fix": "Invite the bot to the channel, or add chat:write.public for public channels.",
+          "fix_status": "unverified"
+        },
+        {
+          "code": "channel_not_found",
+          "meaning": "Value passed for channel was invalid.",
+          "fix": "Use the channel ID (C..., G..., D...), not the name.",
+          "fix_status": "unverified"
+        },
+        {
+          "code": "missing_scope",
+          "meaning": "The token is not granted the scope this call needs.",
+          "fix": "Add chat:write to the app and reinstall it to the workspace.",
+          "fix_status": "unverified"
+        }
+      ],
+      "source": {
+        "url": "https://docs.slack.dev/reference/methods/chat.postMessage",
+        "read_on": "2026-11-07",
+        "kind": "docs-page"
+      },
+      "status": "unverified",
+      "last_checked": "2026-11-07",
+      "file": "calls/slack/api/slack.api.chat.postMessage.md",
+      "body": ""
+    },
+    {
+      "id": "slack.api.chat.update",
+      "provider": "slack",
+      "surface": "api",
+      "operation": "chat.update",
+      "summary": "Edit a message the same token posted.",
+      "tags": [
+        "messaging",
+        "write"
+      ],
+      "endpoint": {
+        "method": "POST",
+        "url": "https://slack.com/api/chat.update",
+        "content_types": [
+          "application/x-www-form-urlencoded",
+          "application/json"
+        ]
+      },
+      "params": {
+        "required": [
+          "token",
+          "channel",
+          "ts"
+        ],
+        "optional": [
+          "text",
+          "blocks",
+          "attachments",
+          "markdown_text",
+          "metadata"
+        ],
+        "notes": "Only messages posted by the same authenticated user or bot can be updated. Ephemeral messages can't be updated."
+      },
+      "auth": {
+        "methods": [
+          "bot-token",
+          "user-token"
+        ],
+        "header": "Authorization: Bearer <SLACK_TOKEN>",
+        "scopes": [
+          "chat:write"
+        ],
+        "scopes_mode": "all"
+      },
+      "config": {
+        "generic": "curl -s -X POST https://slack.com/api/chat.update \\\n  -H \"Authorization: Bearer $SLACK_TOKEN\" -H \"Content-Type: application/json; charset=utf-8\" \\\n  -d '{\"channel\":\"C0123456789\",\"ts\":\"1700000000.000100\",\"text\":\"Edited\"}'\n"
+      },
+      "rate_limit": {
+        "tier": "Tier 3",
+        "notes": "50+ per minute."
+      },
+      "errors": [
+        {
+          "code": "cant_update_message",
+          "meaning": "The authenticated user doesn't have permission to update this message.",
+          "fix": "Update with the same token that posted it.",
+          "fix_status": "unverified"
+        },
+        {
+          "code": "message_not_found",
+          "meaning": "No message exists with that timestamp.",
+          "fix_status": "none"
+        },
+        {
+          "code": "edit_window_closed",
+          "meaning": "The workspace's edit settings don't allow editing this message any more.",
+          "fix_status": "none"
+        }
+      ],
+      "source": {
+        "url": "https://docs.slack.dev/reference/methods/chat.update",
+        "read_on": "2026-11-07",
+        "kind": "docs-page"
+      },
+      "status": "unverified",
+      "last_checked": "2026-11-07",
+      "file": "calls/slack/api/slack.api.chat.update.md",
+      "body": ""
+    },
+    {
+      "id": "slack.api.conversations.history",
+      "provider": "slack",
+      "surface": "api",
+      "operation": "conversations.history",
+      "summary": "Read the message history of a channel or DM.",
+      "tags": [
+        "messaging",
+        "read"
+      ],
+      "endpoint": {
+        "method": "GET",
+        "url": "https://slack.com/api/conversations.history",
+        "content_types": [
+          "application/x-www-form-urlencoded",
+          "application/json"
+        ]
+      },
+      "params": {
+        "required": [
+          "token",
+          "channel"
+        ],
+        "optional": [
+          "cursor",
+          "limit",
+          "oldest",
+          "latest",
+          "inclusive"
+        ],
+        "notes": "limit default 100, max 999; Slack recommends 200 or fewer. Paginate with response_metadata.next_cursor."
+      },
+      "auth": {
+        "methods": [
+          "bot-token",
+          "user-token"
+        ],
+        "header": "Authorization: Bearer <SLACK_TOKEN>",
+        "scopes": [
+          "channels:history",
+          "groups:history",
+          "im:history",
+          "mpim:history"
+        ],
+        "scopes_mode": "any",
+        "notes": "Pick the scope for the conversation type (public, private, DM, group DM). Bot tokens only reach conversations the bot is a member of."
+      },
+      "config": {
+        "generic": "curl -s -H \"Authorization: Bearer $SLACK_TOKEN\" \\\n  \"https://slack.com/api/conversations.history?channel=C0123456789&limit=20\"\n"
+      },
+      "rate_limit": {
+        "tier": "Tier 3",
+        "notes": "50+ per minute."
+      },
+      "errors": [
+        {
+          "code": "not_in_channel",
+          "meaning": "The token doesn't have access to the channel. Only user tokens can read public channels they aren't in.",
+          "fix": "Invite the bot, or use a user token.",
+          "fix_status": "unverified"
+        },
+        {
+          "code": "channel_not_found",
+          "meaning": "Value passed for channel was invalid.",
+          "fix_status": "none"
+        },
+        {
+          "code": "missing_scope",
+          "meaning": "The token is not granted the scope this call needs.",
+          "fix": "Add the history scope for that conversation type and reinstall.",
+          "fix_status": "unverified"
+        },
+        {
+          "code": "ratelimited",
+          "meaning": "The request was rate limited.",
+          "fix": "Wait the number of seconds in the Retry-After header, then retry.",
+          "fix_status": "unverified"
+        }
+      ],
+      "source": {
+        "url": "https://docs.slack.dev/reference/methods/conversations.history",
+        "read_on": "2026-11-07",
+        "kind": "docs-page"
+      },
+      "status": "unverified",
+      "last_checked": "2026-11-07",
+      "file": "calls/slack/api/slack.api.conversations.history.md",
+      "body": ""
+    },
+    {
+      "id": "slack.api.conversations.replies",
+      "provider": "slack",
+      "surface": "api",
+      "operation": "conversations.replies",
+      "summary": "Read the replies in one thread.",
+      "tags": [
+        "messaging",
+        "read"
+      ],
+      "endpoint": {
+        "method": "GET",
+        "url": "https://slack.com/api/conversations.replies",
+        "content_types": [
+          "application/x-www-form-urlencoded"
+        ]
+      },
+      "params": {
+        "required": [
+          "token",
+          "channel",
+          "ts"
+        ],
+        "optional": [
+          "cursor",
+          "limit",
+          "oldest",
+          "latest",
+          "inclusive"
+        ],
+        "notes": "ts is the parent message timestamp. limit default 1000; Slack recommends 200 or fewer. reply_users can hold bot IDs, not only user IDs."
+      },
+      "auth": {
+        "methods": [
+          "bot-token",
+          "user-token"
+        ],
+        "header": "Authorization: Bearer <SLACK_TOKEN>",
+        "scopes": [
+          "channels:history",
+          "groups:history",
+          "im:history",
+          "mpim:history"
+        ],
+        "scopes_mode": "any"
+      },
+      "config": {
+        "generic": "curl -s -H \"Authorization: Bearer $SLACK_TOKEN\" \\\n  \"https://slack.com/api/conversations.replies?channel=C0123456789&ts=1700000000.000100\"\n"
+      },
+      "rate_limit": {
+        "tier": "Tier 3",
+        "notes": "50+ per minute."
+      },
+      "errors": [
+        {
+          "code": "thread_not_found",
+          "meaning": "Value for ts was missing or invalid.",
+          "fix": "Pass the parent message's ts, not a reply's.",
+          "fix_status": "unverified"
+        },
+        {
+          "code": "channel_not_found",
+          "meaning": "Value for channel was missing or invalid.",
+          "fix_status": "none"
+        },
+        {
+          "code": "ratelimited",
+          "meaning": "The request was rate limited.",
+          "fix": "Wait the number of seconds in the Retry-After header, then retry.",
+          "fix_status": "unverified"
+        }
+      ],
+      "source": {
+        "url": "https://docs.slack.dev/reference/methods/conversations.replies",
+        "read_on": "2026-11-07",
+        "kind": "docs-page"
+      },
+      "status": "unverified",
+      "last_checked": "2026-11-07",
+      "file": "calls/slack/api/slack.api.conversations.replies.md",
+      "body": "The docs list form-encoded only for this method, so the example sends query parameters, not JSON."
+    },
+    {
+      "id": "slack.api.users.lookupByEmail",
+      "provider": "slack",
+      "surface": "api",
+      "operation": "users.lookupByEmail",
+      "summary": "Find a workspace user by email address.",
+      "tags": [
+        "users",
+        "read"
+      ],
+      "endpoint": {
+        "method": "GET",
+        "url": "https://slack.com/api/users.lookupByEmail",
+        "content_types": [
+          "application/x-www-form-urlencoded"
+        ]
+      },
+      "params": {
+        "required": [
+          "token",
+          "email"
+        ]
+      },
+      "auth": {
+        "methods": [
+          "bot-token",
+          "user-token"
+        ],
+        "header": "Authorization: Bearer <SLACK_TOKEN>",
+        "scopes": [
+          "users:read.email"
+        ],
+        "scopes_mode": "all",
+        "notes": "users:read alone no longer returns the email field. Custom bot users can't use this method."
+      },
+      "config": {
+        "generic": "curl -s -H \"Authorization: Bearer $SLACK_TOKEN\" \\\n  \"https://slack.com/api/users.lookupByEmail?email=someone%40example.com\"\n"
+      },
+      "rate_limit": {
+        "tier": "Tier 3",
+        "notes": "50+ per minute."
+      },
+      "errors": [
+        {
+          "code": "users_not_found",
+          "meaning": "No user found for the email. Also returned for deactivated users.",
+          "fix_status": "none"
+        },
+        {
+          "code": "missing_scope",
+          "meaning": "The token is not granted the scope this call needs.",
+          "fix": "Add users:read.email and reinstall.",
+          "fix_status": "unverified"
+        }
+      ],
+      "source": {
+        "url": "https://docs.slack.dev/reference/methods/users.lookupByEmail",
+        "read_on": "2026-11-07",
+        "kind": "docs-page"
+      },
+      "status": "unverified",
+      "last_checked": "2026-11-07",
+      "file": "calls/slack/api/slack.api.users.lookupByEmail.md",
       "body": ""
     }
   ]
