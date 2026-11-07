@@ -52,3 +52,20 @@ atlassian:
     url: https://developer.atlassian.com/cloud/confluence/openapi-v2.v3.json
     reachable: false
     note: Same as Jira.
+  - kind: readme
+    url: https://github.com/atlassian/atlassian-mcp-server
+    reachable: true
+    note: git clone works. The skills/ folder shows MCP call examples with argument names.
+  - kind: docs-page
+    url: https://developer.atlassian.com/cloud/jira/platform/rate-limiting/
+    reachable: true
+    note: Readable. Names priced endpoints, 429 headers and quotas.
+  - kind: docs-page
+    url: https://developer.atlassian.com/cloud/jira/platform/basic-auth-for-rest-apis/
+    reachable: true
+  - kind: docs-page
+    url: https://developer.atlassian.com/cloud/confluence/basic-auth-for-rest-apis/
+    reachable: true
+  - kind: docs-page
+    url: https://developer.atlassian.com/cloud/confluence/rate-limiting/
+    reachable: true
