@@ -15,7 +15,7 @@ tool:
 params:
   required: [owner, repo, title, head, base]
   optional: [body, draft, maintainer_can_modify, reviewers]
-  notes: The README lists an MCP App UI for this tool, ui://github-mcp-server/pr-write.
+  notes: The README lists an MCP App UI for this tool, ui://github-mcp-server/pr-write. MCP Apps is on by default; the server sends the UI only to clients that advertise the io.modelcontextprotocol/ui capability.
 auth:
   methods: [oauth2, personal-access-token]
   header: "Authorization: Bearer <GITHUB_PAT>"
@@ -52,16 +52,17 @@ config:
       claude mcp add github -e GITHUB_PERSONAL_ACCESS_TOKEN=YOUR_GITHUB_PAT -- docker run -i --rm -e GITHUB_PERSONAL_ACCESS_TOKEN ghcr.io/github/github-mcp-server
 errors:
   - code: artifact-open-fails
-    meaning: In Matt's work org, an artifact tries to open after the call, then breaks. A config setting fixes it.
-    fix: Unknown. Placeholder until Matt gives the setting.
+    meaning: In Claude, after the GitHub MCP create_pull_request call, an artifact (the PR form) tries to open, then breaks. Seen on the MCP call, not the REST API.
+    fix: "Matt's words: a \"show UI\" config setting. The exact name is unconfirmed. Closest documented setting: the server's mcp_apps_disable_form_deferral feature flag, which keeps MCP App result views but makes write tools run directly instead of first opening an interactive form. Remote server: add header X-MCP-Features: mcp_apps_disable_form_deferral (or ?features=mcp_apps_disable_form_deferral on the URL). Local server: pass it to --features."
     fix_status: unverified
-    seen_in: Matt's work org
-    needs_info: Which client shows it (Claude Code, Claude Desktop, VS Code, claude.ai)? What is the config setting and where does it go? Is the artifact the MCP App UI (ui://github-mcp-server/pr-write) the README lists for this tool? That link is a guess, not confirmed.
+    seen_in: Claude, Matt's work org, GitHub MCP server
+    needs_info: Is the setting Matt uses on the Claude side (a show-UI toggle) or this server flag? Confirm the exact name, then mark verified.
 source:
   url: https://raw.githubusercontent.com/github/github-mcp-server/main/README.md
   also:
     - https://raw.githubusercontent.com/github/github-mcp-server/main/docs/remote-server.md
     - https://raw.githubusercontent.com/github/github-mcp-server/main/docs/installation-guides/install-claude.md
+    - https://raw.githubusercontent.com/github/github-mcp-server/main/docs/server-configuration.md
   read_on: 2026-11-07
   kind: readme
 status: unverified
