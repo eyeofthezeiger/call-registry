@@ -73,6 +73,12 @@ export function validateAll(callsDir = CALLS_DIR) {
       }
     }
 
+    // Every ${VAR} in a smoke request must be declared in smoke.env, so missing ones skip cleanly.
+    if (data.smoke?.request) {
+      const used = new Set(JSON.stringify(data.smoke.request).match(/\$\{([A-Z][A-Z0-9_]*)\}/g)?.map((v) => v.slice(2, -1)));
+      for (const v of used) if (!(data.smoke.env ?? []).includes(v)) add(`smoke uses \${${v}} but smoke.env doesn't list it`);
+    }
+
     for (const [re, label] of SECRET_PATTERNS) {
       if (re.test(text)) add(`looks like it contains a real ${label}. Use a placeholder like <TOKEN>.`);
     }

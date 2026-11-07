@@ -35,4 +35,9 @@ source:
   reference_url: https://docs.github.com/rest/issues/issues#create-an-issue
 status: unverified
 last_checked: 2026-11-07
+smoke:
+  kind: write
+  notes: Creates a real issue. Use a sandbox repo.
+test:
+  status: untested
 ---

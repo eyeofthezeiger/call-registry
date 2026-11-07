@@ -35,4 +35,16 @@ source:
   spec_revision: "20261106"
 status: unverified
 last_checked: 2026-11-07
+smoke:
+  kind: read
+  env: [GOOGLE_ACCESS_TOKEN, GSHEETS_TEST_SHEET_ID]
+  request:
+    method: GET
+    url: https://sheets.googleapis.com/v4/spreadsheets/${GSHEETS_TEST_SHEET_ID}/values/A1%3AA1
+    headers:
+      Authorization: Bearer ${GOOGLE_ACCESS_TOKEN}
+  expect:
+    status: 200
+test:
+  status: untested
 ---

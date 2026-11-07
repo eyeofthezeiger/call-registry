@@ -40,5 +40,17 @@ source:
   spec_revision: "0.47.0"
 status: unverified
 last_checked: 2026-11-07
+smoke:
+  kind: read
+  env: [FIGMA_TOKEN, FIGMA_TEST_FILE_KEY, FIGMA_TEST_NODE_ID]
+  request:
+    method: GET
+    url: https://api.figma.com/v1/files/${FIGMA_TEST_FILE_KEY}/nodes?ids=${FIGMA_TEST_NODE_ID}
+    headers:
+      X-Figma-Token: ${FIGMA_TOKEN}
+  expect:
+    status: 200
+test:
+  status: untested
 ---
 The rate-limit tier for this endpoint isn't named on the rate limits page summary we read, so it's left blank.

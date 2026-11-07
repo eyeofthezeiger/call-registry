@@ -39,4 +39,9 @@ source:
   reference_url: https://docs.github.com/rest/pulls/pulls#create-a-pull-request
 status: unverified
 last_checked: 2026-11-07
+smoke:
+  kind: write
+  notes: Opens a real PR. Use a sandbox repo.
+test:
+  status: untested
 ---

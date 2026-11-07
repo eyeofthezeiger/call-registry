@@ -28,4 +28,9 @@ source:
   reference_url: https://docs.github.com/rest/issues/comments#create-an-issue-comment
 status: unverified
 last_checked: 2026-11-07
+smoke:
+  kind: write
+  notes: Posts a real comment and notifies people. Sandbox repo only.
+test:
+  status: untested
 ---

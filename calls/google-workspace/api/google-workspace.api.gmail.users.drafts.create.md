@@ -35,5 +35,10 @@ source:
   spec_revision: "20261102"
 status: unverified
 last_checked: 2026-11-07
+smoke:
+  kind: write
+  notes: Creates a real draft. Run only against a test mailbox.
+test:
+  status: untested
 ---
 The raw-message format (base64url RFC 2822) comes from the Message schema's raw field in the discovery doc.

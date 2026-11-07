@@ -43,5 +43,18 @@ source:
   kind: docs-page
 status: unverified
 last_checked: 2026-11-07
+smoke:
+  kind: read
+  env: [SLACK_TOKEN, SLACK_TEST_CHANNEL, SLACK_TEST_THREAD_TS]
+  request:
+    method: GET
+    url: https://slack.com/api/conversations.replies?channel=${SLACK_TEST_CHANNEL}&ts=${SLACK_TEST_THREAD_TS}&limit=1
+    headers:
+      Authorization: Bearer ${SLACK_TOKEN}
+  expect:
+    status: 200
+    json: {ok: true}
+test:
+  status: untested
 ---
 The docs list form-encoded only for this method, so the example sends query parameters, not JSON.

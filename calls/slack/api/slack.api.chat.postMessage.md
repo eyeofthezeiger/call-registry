@@ -46,4 +46,9 @@ source:
   kind: docs-page
 status: unverified
 last_checked: 2026-11-07
+smoke:
+  kind: write
+  notes: Posts a real message. Use a private test channel the bot is in.
+test:
+  status: untested
 ---

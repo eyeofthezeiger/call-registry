@@ -38,4 +38,16 @@ source:
   spec_revision: "20261106"
 status: unverified
 last_checked: 2026-11-07
+smoke:
+  kind: read
+  env: [GOOGLE_ACCESS_TOKEN]
+  request:
+    method: GET
+    url: https://www.googleapis.com/drive/v3/files?pageSize=1
+    headers:
+      Authorization: Bearer ${GOOGLE_ACCESS_TOKEN}
+  expect:
+    status: 200
+test:
+  status: untested
 ---

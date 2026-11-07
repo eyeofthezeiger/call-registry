@@ -38,4 +38,17 @@ source:
   kind: docs-page
 status: unverified
 last_checked: 2026-11-07
+smoke:
+  kind: read
+  env: [SLACK_TOKEN, SLACK_TEST_EMAIL]
+  request:
+    method: GET
+    url: https://slack.com/api/users.lookupByEmail?email=${SLACK_TEST_EMAIL}
+    headers:
+      Authorization: Bearer ${SLACK_TOKEN}
+  expect:
+    status: 200
+    json: {ok: true}
+test:
+  status: untested
 ---

@@ -372,6 +372,115 @@
     },
     "notes": {
       "type": "string"
+    },
+    "smoke": {
+      "description": "How the smoke runner checks this call. Runs on the owner's machine with their own credentials from env vars.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind"
+      ],
+      "properties": {
+        "kind": {
+          "description": "read = safe, runs by default. write = only with --include-writes and SMOKE_SANDBOX=1. manual = never automated.",
+          "enum": [
+            "read",
+            "write",
+            "manual"
+          ]
+        },
+        "env": {
+          "description": "Env vars the test needs. Missing any means the test is skipped, not failed.",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9_]*$"
+          }
+        },
+        "request": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "method",
+            "url"
+          ],
+          "properties": {
+            "method": {
+              "enum": [
+                "GET",
+                "POST",
+                "PUT",
+                "PATCH",
+                "DELETE"
+              ]
+            },
+            "url": {
+              "description": "May use ${ENV_VAR} placeholders.",
+              "type": "string",
+              "pattern": "^https?://"
+            },
+            "headers": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            },
+            "body": {
+              "description": "JSON body as a string. May use ${ENV_VAR}.",
+              "type": "string"
+            }
+          }
+        },
+        "mcp_tools_list": {
+          "description": "MCP only: pass if the server's tools/list includes tool.name.",
+          "type": "boolean"
+        },
+        "expect": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "status": {
+              "type": "integer"
+            },
+            "json": {
+              "description": "Top-level keys and values the JSON response must contain, e.g. {ok: true} for Slack.",
+              "type": "object"
+            }
+          }
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    },
+    "test": {
+      "description": "Last smoke result. Written by the runner. Separate from status/verified, which only Matt sets.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "untested",
+            "passing",
+            "failing",
+            "skipped"
+          ]
+        },
+        "ran_on": {
+          "type": "string",
+          "format": "date"
+        },
+        "runner": {
+          "description": "Who or what ran it, e.g. chief-of-staff@home-box.",
+          "type": "string"
+        },
+        "detail": {
+          "type": "string"
+        }
+      }
     }
   },
   "allOf": [

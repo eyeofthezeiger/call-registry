@@ -35,4 +35,16 @@ source:
   spec_revision: "20261106"
 status: unverified
 last_checked: 2026-11-07
+smoke:
+  kind: read
+  env: [GOOGLE_ACCESS_TOKEN, GDOCS_TEST_DOC_ID]
+  request:
+    method: GET
+    url: https://docs.googleapis.com/v1/documents/${GDOCS_TEST_DOC_ID}
+    headers:
+      Authorization: Bearer ${GOOGLE_ACCESS_TOKEN}
+  expect:
+    status: 200
+test:
+  status: untested
 ---

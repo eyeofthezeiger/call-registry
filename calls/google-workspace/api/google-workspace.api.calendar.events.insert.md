@@ -35,4 +35,9 @@ source:
   spec_revision: "20261102"
 status: unverified
 last_checked: 2026-11-07
+smoke:
+  kind: write
+  notes: Creates a real event. Use a test calendar ID and sendUpdates=none.
+test:
+  status: untested
 ---

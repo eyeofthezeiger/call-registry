@@ -48,4 +48,17 @@ source:
   kind: docs-page
 status: unverified
 last_checked: 2026-11-07
+smoke:
+  kind: read
+  env: [SLACK_TOKEN, SLACK_TEST_CHANNEL]
+  request:
+    method: GET
+    url: https://slack.com/api/conversations.history?channel=${SLACK_TEST_CHANNEL}&limit=1
+    headers:
+      Authorization: Bearer ${SLACK_TOKEN}
+  expect:
+    status: 200
+    json: {ok: true}
+test:
+  status: untested
 ---

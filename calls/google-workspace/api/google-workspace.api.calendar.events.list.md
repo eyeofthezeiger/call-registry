@@ -39,5 +39,17 @@ source:
   spec_revision: "20261102"
 status: unverified
 last_checked: 2026-11-07
+smoke:
+  kind: read
+  env: [GOOGLE_ACCESS_TOKEN]
+  request:
+    method: GET
+    url: https://www.googleapis.com/calendar/v3/calendars/primary/events?maxResults=1
+    headers:
+      Authorization: Bearer ${GOOGLE_ACCESS_TOKEN}
+  expect:
+    status: 200
+test:
+  status: untested
 ---
 orderBy=startTime only works with singleEvents=true, per the orderBy enum description in the discovery doc.

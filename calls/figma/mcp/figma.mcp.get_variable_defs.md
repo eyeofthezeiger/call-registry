@@ -48,5 +48,10 @@ source:
 status: unverified
 last_checked: 2026-11-07
 notes: Available on remote and desktop servers.
+smoke:
+  kind: manual
+  notes: Remote server needs an interactive Figma sign-in from a catalog client, so the runner can't reach it with an env token. Check by hand in Claude Code with /mcp.
+test:
+  status: untested
 ---
 The desktop server (http://127.0.0.1:3845/mcp, server name figma-desktop) needs the Figma desktop app and a Dev or Full seat on a paid plan. Add it with: claude mcp add --transport http figma-desktop http://127.0.0.1:3845/mcp

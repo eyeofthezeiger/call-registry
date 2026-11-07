@@ -45,4 +45,9 @@ source:
   spec_revision: "0.47.0"
 status: unverified
 last_checked: 2026-11-07
+smoke:
+  kind: write
+  notes: Posts a real comment people can see. Test file only.
+test:
+  status: untested
 ---

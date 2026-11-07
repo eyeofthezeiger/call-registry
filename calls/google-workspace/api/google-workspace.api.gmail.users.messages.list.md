@@ -38,5 +38,17 @@ source:
   spec_revision: "20261102"
 status: unverified
 last_checked: 2026-11-07
+smoke:
+  kind: read
+  env: [GOOGLE_ACCESS_TOKEN]
+  request:
+    method: GET
+    url: https://gmail.googleapis.com/gmail/v1/users/me/messages?maxResults=1
+    headers:
+      Authorization: Bearer ${GOOGLE_ACCESS_TOKEN}
+  expect:
+    status: 200
+test:
+  status: untested
 ---
 Response shape (ListMessagesResponse) is from the discovery doc. Field names in the example are from that schema; values are placeholders.

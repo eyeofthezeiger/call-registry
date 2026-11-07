@@ -26,10 +26,11 @@ Nov 7, 2026. Owner: Matt. Status: scaffold built, seed calls unverified.
 - Errors: code, meaning, fix, fix status (unverified, verified, none), who verified and when, open question.
 - Source: doc URL, date read, kind (openapi, discovery, docs page, readme), spec revision.
 - Trust: status (unverified by default), verified_by: matt and verified_on, last_checked.
+- Smoke and test: how to check it, and the last result.
 
 ## Gates
 
-- Schema check, file placement, duplicate ids, secret patterns.
+- Schema check, file placement, duplicate ids, secret patterns, every smoke placeholder declared.
 - `verified` only with `verified_by: matt` and a date. Same for fixes.
 - On PRs, a check fails if anyone but eyeofthezeiger flips something to verified.
 - CODEOWNERS plus branch protection is the real gate. Matt turns on "require review from code owners".
@@ -52,6 +53,15 @@ Nov 7, 2026. Owner: Matt. Status: scaffold built, seed calls unverified.
 ## Known issue to fill
 
 - GitHub create_pull_request in Matt's org: an artifact tries to open, breaks, and needs a config setting. Placeholder error entry, unverified, with open questions. Possible link to the MCP App UI the README lists for that tool. Not confirmed.
+
+## Smoke tests
+
+- One test per call, using Matt's own credentials from env vars. Missing vars skip.
+- Read tests run by default. Write tests need `--include-writes` and `SMOKE_SANDBOX=1`. Manual tests never run.
+- MCP read tests check tools/list includes the tool.
+- Results go to `results/` (gitignored). `--update` writes `test:` into each file for a PR.
+- `test` stays separate from `status`. Only Matt verifies.
+- Runs on Matt's machine, ideally by his personal chief-of-staff agent. Not in CI. Not against anyone else's account.
 
 ## Update routine
 

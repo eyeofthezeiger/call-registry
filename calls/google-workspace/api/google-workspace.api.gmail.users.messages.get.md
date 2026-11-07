@@ -37,4 +37,16 @@ source:
   spec_revision: "20261102"
 status: unverified
 last_checked: 2026-11-07
+smoke:
+  kind: read
+  env: [GOOGLE_ACCESS_TOKEN, GMAIL_TEST_MESSAGE_ID]
+  request:
+    method: GET
+    url: https://gmail.googleapis.com/gmail/v1/users/me/messages/${GMAIL_TEST_MESSAGE_ID}?format=minimal
+    headers:
+      Authorization: Bearer ${GOOGLE_ACCESS_TOKEN}
+  expect:
+    status: 200
+test:
+  status: untested
 ---

@@ -55,6 +55,13 @@
       "status": "unverified",
       "last_checked": "2026-11-07",
       "notes": "The page says v1 traffic (https://mcp.atlassian.com/v1/mcp) moves to v2 on March 1, 2027. Use v2.",
+      "smoke": {
+        "kind": "write",
+        "notes": "Posts a real comment and notifies watchers. Test project only."
+      },
+      "test": {
+        "status": "untested"
+      },
       "file": "calls/atlassian/mcp/atlassian.mcp.addOrEditJiraIssueComment.md",
       "body": ""
     },
@@ -108,6 +115,13 @@
       "status": "unverified",
       "last_checked": "2026-11-07",
       "notes": "The page says v1 traffic (https://mcp.atlassian.com/v1/mcp) moves to v2 on March 1, 2027. Use v2.",
+      "smoke": {
+        "kind": "write",
+        "notes": "Creates a real issue. Test project only."
+      },
+      "test": {
+        "status": "untested"
+      },
       "file": "calls/atlassian/mcp/atlassian.mcp.createJiraIssue.md",
       "body": ""
     },
@@ -158,6 +172,13 @@
       "status": "unverified",
       "last_checked": "2026-11-07",
       "notes": "The page says v1 traffic (https://mcp.atlassian.com/v1/mcp) moves to v2 on March 1, 2027. Use v2.",
+      "smoke": {
+        "kind": "manual",
+        "notes": "Needs an interactive OAuth sign-in. Check by hand."
+      },
+      "test": {
+        "status": "untested"
+      },
       "file": "calls/atlassian/mcp/atlassian.mcp.getAccessibleAtlassianResources.md",
       "body": ""
     },
@@ -211,6 +232,13 @@
       "status": "unverified",
       "last_checked": "2026-11-07",
       "notes": "The page says v1 traffic (https://mcp.atlassian.com/v1/mcp) moves to v2 on March 1, 2027. Use v2.",
+      "smoke": {
+        "kind": "manual",
+        "notes": "Needs an interactive OAuth sign-in. Check by hand."
+      },
+      "test": {
+        "status": "untested"
+      },
       "file": "calls/atlassian/mcp/atlassian.mcp.getConfluenceContent.md",
       "body": ""
     },
@@ -264,6 +292,13 @@
       "status": "unverified",
       "last_checked": "2026-11-07",
       "notes": "The page says v1 traffic (https://mcp.atlassian.com/v1/mcp) moves to v2 on March 1, 2027. Use v2.",
+      "smoke": {
+        "kind": "manual",
+        "notes": "Needs an interactive OAuth sign-in. Check by hand."
+      },
+      "test": {
+        "status": "untested"
+      },
       "file": "calls/atlassian/mcp/atlassian.mcp.getJiraIssue.md",
       "body": ""
     },
@@ -317,6 +352,13 @@
       "status": "unverified",
       "last_checked": "2026-11-07",
       "notes": "The page says v1 traffic (https://mcp.atlassian.com/v1/mcp) moves to v2 on March 1, 2027. Use v2.",
+      "smoke": {
+        "kind": "manual",
+        "notes": "Needs an interactive OAuth sign-in. Check by hand."
+      },
+      "test": {
+        "status": "untested"
+      },
       "file": "calls/atlassian/mcp/atlassian.mcp.searchConfluence.md",
       "body": ""
     },
@@ -370,6 +412,13 @@
       "status": "unverified",
       "last_checked": "2026-11-07",
       "notes": "The page says v1 traffic (https://mcp.atlassian.com/v1/mcp) moves to v2 on March 1, 2027. Use v2.",
+      "smoke": {
+        "kind": "manual",
+        "notes": "Needs an interactive OAuth sign-in. Check by hand with a harmless JQL like project = TEST."
+      },
+      "test": {
+        "status": "untested"
+      },
       "file": "calls/atlassian/mcp/atlassian.mcp.searchJiraIssuesUsingJql.md",
       "body": ""
     },
@@ -443,6 +492,26 @@
       },
       "status": "unverified",
       "last_checked": "2026-11-07",
+      "smoke": {
+        "kind": "read",
+        "env": [
+          "FIGMA_TOKEN",
+          "FIGMA_TEST_FILE_KEY"
+        ],
+        "request": {
+          "method": "GET",
+          "url": "https://api.figma.com/v1/files/${FIGMA_TEST_FILE_KEY}/comments",
+          "headers": {
+            "X-Figma-Token": "${FIGMA_TOKEN}"
+          }
+        },
+        "expect": {
+          "status": 200
+        }
+      },
+      "test": {
+        "status": "untested"
+      },
       "file": "calls/figma/api/figma.api.getComments.md",
       "body": ""
     },
@@ -522,6 +591,27 @@
       },
       "status": "unverified",
       "last_checked": "2026-11-07",
+      "smoke": {
+        "kind": "read",
+        "env": [
+          "FIGMA_TOKEN",
+          "FIGMA_TEST_FILE_KEY"
+        ],
+        "request": {
+          "method": "GET",
+          "url": "https://api.figma.com/v1/files/${FIGMA_TEST_FILE_KEY}?depth=1",
+          "headers": {
+            "X-Figma-Token": "${FIGMA_TOKEN}"
+          }
+        },
+        "expect": {
+          "status": 200
+        },
+        "notes": "Tier 1. View and Collab seats get very few of these per month, so don't run it often."
+      },
+      "test": {
+        "status": "untested"
+      },
       "file": "calls/figma/api/figma.api.getFile.md",
       "body": ""
     },
@@ -595,6 +685,27 @@
       },
       "status": "unverified",
       "last_checked": "2026-11-07",
+      "smoke": {
+        "kind": "read",
+        "env": [
+          "FIGMA_TOKEN",
+          "FIGMA_TEST_FILE_KEY",
+          "FIGMA_TEST_NODE_ID"
+        ],
+        "request": {
+          "method": "GET",
+          "url": "https://api.figma.com/v1/files/${FIGMA_TEST_FILE_KEY}/nodes?ids=${FIGMA_TEST_NODE_ID}",
+          "headers": {
+            "X-Figma-Token": "${FIGMA_TOKEN}"
+          }
+        },
+        "expect": {
+          "status": 200
+        }
+      },
+      "test": {
+        "status": "untested"
+      },
       "file": "calls/figma/api/figma.api.getFileNodes.md",
       "body": "The rate-limit tier for this endpoint isn't named on the rate limits page summary we read, so it's left blank."
     },
@@ -678,6 +789,28 @@
       },
       "status": "unverified",
       "last_checked": "2026-11-07",
+      "smoke": {
+        "kind": "read",
+        "env": [
+          "FIGMA_TOKEN",
+          "FIGMA_TEST_FILE_KEY",
+          "FIGMA_TEST_NODE_ID"
+        ],
+        "request": {
+          "method": "GET",
+          "url": "https://api.figma.com/v1/images/${FIGMA_TEST_FILE_KEY}?ids=${FIGMA_TEST_NODE_ID}&format=png",
+          "headers": {
+            "X-Figma-Token": "${FIGMA_TOKEN}"
+          }
+        },
+        "expect": {
+          "status": 200
+        },
+        "notes": "Tier 1, same caution as getFile."
+      },
+      "test": {
+        "status": "untested"
+      },
       "file": "calls/figma/api/figma.api.getImages.md",
       "body": ""
     },
@@ -723,6 +856,25 @@
       },
       "status": "unverified",
       "last_checked": "2026-11-07",
+      "smoke": {
+        "kind": "read",
+        "env": [
+          "FIGMA_TOKEN"
+        ],
+        "request": {
+          "method": "GET",
+          "url": "https://api.figma.com/v1/me",
+          "headers": {
+            "X-Figma-Token": "${FIGMA_TOKEN}"
+          }
+        },
+        "expect": {
+          "status": 200
+        }
+      },
+      "test": {
+        "status": "untested"
+      },
       "file": "calls/figma/api/figma.api.getMe.md",
       "body": ""
     },
@@ -799,6 +951,13 @@
       },
       "status": "unverified",
       "last_checked": "2026-11-07",
+      "smoke": {
+        "kind": "write",
+        "notes": "Posts a real comment people can see. Test file only."
+      },
+      "test": {
+        "status": "untested"
+      },
       "file": "calls/figma/api/figma.api.postComment.md",
       "body": ""
     },
@@ -850,6 +1009,13 @@
       "status": "unverified",
       "last_checked": "2026-11-07",
       "notes": "Available on remote and desktop servers.",
+      "smoke": {
+        "kind": "manual",
+        "notes": "Remote server needs an interactive Figma sign-in from a catalog client, so the runner can't reach it with an env token. Check by hand in Claude Code with /mcp."
+      },
+      "test": {
+        "status": "untested"
+      },
       "file": "calls/figma/mcp/figma.mcp.get_design_context.md",
       "body": "The desktop server (http://127.0.0.1:3845/mcp, server name figma-desktop) needs the Figma desktop app and a Dev or Full seat on a paid plan. Add it with: claude mcp add --transport http figma-desktop http://127.0.0.1:3845/mcp"
     },
@@ -901,6 +1067,13 @@
       "status": "unverified",
       "last_checked": "2026-11-07",
       "notes": "Available on remote and desktop servers.",
+      "smoke": {
+        "kind": "manual",
+        "notes": "Remote server needs an interactive Figma sign-in from a catalog client, so the runner can't reach it with an env token. Check by hand in Claude Code with /mcp."
+      },
+      "test": {
+        "status": "untested"
+      },
       "file": "calls/figma/mcp/figma.mcp.get_metadata.md",
       "body": "The desktop server (http://127.0.0.1:3845/mcp, server name figma-desktop) needs the Figma desktop app and a Dev or Full seat on a paid plan. Add it with: claude mcp add --transport http figma-desktop http://127.0.0.1:3845/mcp"
     },
@@ -952,6 +1125,13 @@
       "status": "unverified",
       "last_checked": "2026-11-07",
       "notes": "Available on remote and desktop servers.",
+      "smoke": {
+        "kind": "manual",
+        "notes": "Remote server needs an interactive Figma sign-in from a catalog client, so the runner can't reach it with an env token. Check by hand in Claude Code with /mcp."
+      },
+      "test": {
+        "status": "untested"
+      },
       "file": "calls/figma/mcp/figma.mcp.get_screenshot.md",
       "body": "The desktop server (http://127.0.0.1:3845/mcp, server name figma-desktop) needs the Figma desktop app and a Dev or Full seat on a paid plan. Add it with: claude mcp add --transport http figma-desktop http://127.0.0.1:3845/mcp"
     },
@@ -1003,6 +1183,13 @@
       "status": "unverified",
       "last_checked": "2026-11-07",
       "notes": "Available on remote and desktop servers.",
+      "smoke": {
+        "kind": "manual",
+        "notes": "Remote server needs an interactive Figma sign-in from a catalog client, so the runner can't reach it with an env token. Check by hand in Claude Code with /mcp."
+      },
+      "test": {
+        "status": "untested"
+      },
       "file": "calls/figma/mcp/figma.mcp.get_variable_defs.md",
       "body": "The desktop server (http://127.0.0.1:3845/mcp, server name figma-desktop) needs the Figma desktop app and a Dev or Full seat on a paid plan. Add it with: claude mcp add --transport http figma-desktop http://127.0.0.1:3845/mcp"
     },
@@ -1068,6 +1255,13 @@
       },
       "status": "unverified",
       "last_checked": "2026-11-07",
+      "smoke": {
+        "kind": "write",
+        "notes": "Creates a real issue. Use a sandbox repo."
+      },
+      "test": {
+        "status": "untested"
+      },
       "file": "calls/github/api/github.api.issues.create.md",
       "body": ""
     },
@@ -1118,6 +1312,13 @@
       },
       "status": "unverified",
       "last_checked": "2026-11-07",
+      "smoke": {
+        "kind": "write",
+        "notes": "Posts a real comment and notifies people. Sandbox repo only."
+      },
+      "test": {
+        "status": "untested"
+      },
       "file": "calls/github/api/github.api.issues.create-comment.md",
       "body": ""
     },
@@ -1191,6 +1392,13 @@
       },
       "status": "unverified",
       "last_checked": "2026-11-07",
+      "smoke": {
+        "kind": "write",
+        "notes": "Opens a real PR. Use a sandbox repo."
+      },
+      "test": {
+        "status": "untested"
+      },
       "file": "calls/github/api/github.api.pulls.create.md",
       "body": ""
     },
@@ -1237,6 +1445,29 @@
       },
       "status": "unverified",
       "last_checked": "2026-11-07",
+      "smoke": {
+        "kind": "read",
+        "env": [
+          "GITHUB_TOKEN",
+          "GITHUB_TEST_OWNER",
+          "GITHUB_TEST_REPO",
+          "GITHUB_TEST_PR"
+        ],
+        "request": {
+          "method": "GET",
+          "url": "https://api.github.com/repos/${GITHUB_TEST_OWNER}/${GITHUB_TEST_REPO}/pulls/${GITHUB_TEST_PR}",
+          "headers": {
+            "Authorization": "Bearer ${GITHUB_TOKEN}",
+            "Accept": "application/vnd.github+json"
+          }
+        },
+        "expect": {
+          "status": 200
+        }
+      },
+      "test": {
+        "status": "untested"
+      },
       "file": "calls/github/api/github.api.pulls.get.md",
       "body": ""
     },
@@ -1286,6 +1517,28 @@
       },
       "status": "unverified",
       "last_checked": "2026-11-07",
+      "smoke": {
+        "kind": "read",
+        "env": [
+          "GITHUB_TOKEN",
+          "GITHUB_TEST_OWNER",
+          "GITHUB_TEST_REPO"
+        ],
+        "request": {
+          "method": "GET",
+          "url": "https://api.github.com/repos/${GITHUB_TEST_OWNER}/${GITHUB_TEST_REPO}/contents/",
+          "headers": {
+            "Authorization": "Bearer ${GITHUB_TOKEN}",
+            "Accept": "application/vnd.github+json"
+          }
+        },
+        "expect": {
+          "status": 200
+        }
+      },
+      "test": {
+        "status": "untested"
+      },
       "file": "calls/github/api/github.api.repos.get-content.md",
       "body": ""
     },
@@ -1363,6 +1616,13 @@
       },
       "status": "unverified",
       "last_checked": "2026-11-07",
+      "smoke": {
+        "kind": "write",
+        "notes": "Opens a real PR. Sandbox repo only."
+      },
+      "test": {
+        "status": "untested"
+      },
       "file": "calls/github/mcp/github.mcp.create_pull_request.md",
       "body": ""
     },
@@ -1427,6 +1687,17 @@
       },
       "status": "unverified",
       "last_checked": "2026-11-07",
+      "smoke": {
+        "kind": "read",
+        "env": [
+          "GITHUB_PAT"
+        ],
+        "mcp_tools_list": true,
+        "notes": "Checks the server lists this tool. Does not call it."
+      },
+      "test": {
+        "status": "untested"
+      },
       "file": "calls/github/mcp/github.mcp.get_file_contents.md",
       "body": ""
     },
@@ -1497,6 +1768,13 @@
       },
       "status": "unverified",
       "last_checked": "2026-11-07",
+      "smoke": {
+        "kind": "write",
+        "notes": "Creates or edits a real issue. Sandbox repo only."
+      },
+      "test": {
+        "status": "untested"
+      },
       "file": "calls/github/mcp/github.mcp.issue_write.md",
       "body": ""
     },
@@ -1562,6 +1840,17 @@
       },
       "status": "unverified",
       "last_checked": "2026-11-07",
+      "smoke": {
+        "kind": "read",
+        "env": [
+          "GITHUB_PAT"
+        ],
+        "mcp_tools_list": true,
+        "notes": "Checks the server lists this tool. Does not call it."
+      },
+      "test": {
+        "status": "untested"
+      },
       "file": "calls/github/mcp/github.mcp.pull_request_read.md",
       "body": ""
     },
@@ -1617,6 +1906,13 @@
       },
       "status": "unverified",
       "last_checked": "2026-11-07",
+      "smoke": {
+        "kind": "write",
+        "notes": "Creates a real event. Use a test calendar ID and sendUpdates=none."
+      },
+      "test": {
+        "status": "untested"
+      },
       "file": "calls/google-workspace/api/google-workspace.api.calendar.events.insert.md",
       "body": ""
     },
@@ -1684,6 +1980,25 @@
       },
       "status": "unverified",
       "last_checked": "2026-11-07",
+      "smoke": {
+        "kind": "read",
+        "env": [
+          "GOOGLE_ACCESS_TOKEN"
+        ],
+        "request": {
+          "method": "GET",
+          "url": "https://www.googleapis.com/calendar/v3/calendars/primary/events?maxResults=1",
+          "headers": {
+            "Authorization": "Bearer ${GOOGLE_ACCESS_TOKEN}"
+          }
+        },
+        "expect": {
+          "status": 200
+        }
+      },
+      "test": {
+        "status": "untested"
+      },
       "file": "calls/google-workspace/api/google-workspace.api.calendar.events.list.md",
       "body": "orderBy=startTime only works with singleEvents=true, per the orderBy enum description in the discovery doc."
     },
@@ -1739,6 +2054,26 @@
       },
       "status": "unverified",
       "last_checked": "2026-11-07",
+      "smoke": {
+        "kind": "read",
+        "env": [
+          "GOOGLE_ACCESS_TOKEN",
+          "GDOCS_TEST_DOC_ID"
+        ],
+        "request": {
+          "method": "GET",
+          "url": "https://docs.googleapis.com/v1/documents/${GDOCS_TEST_DOC_ID}",
+          "headers": {
+            "Authorization": "Bearer ${GOOGLE_ACCESS_TOKEN}"
+          }
+        },
+        "expect": {
+          "status": 200
+        }
+      },
+      "test": {
+        "status": "untested"
+      },
       "file": "calls/google-workspace/api/google-workspace.api.docs.documents.get.md",
       "body": ""
     },
@@ -1802,6 +2137,25 @@
       },
       "status": "unverified",
       "last_checked": "2026-11-07",
+      "smoke": {
+        "kind": "read",
+        "env": [
+          "GOOGLE_ACCESS_TOKEN"
+        ],
+        "request": {
+          "method": "GET",
+          "url": "https://www.googleapis.com/drive/v3/files?pageSize=1",
+          "headers": {
+            "Authorization": "Bearer ${GOOGLE_ACCESS_TOKEN}"
+          }
+        },
+        "expect": {
+          "status": 200
+        }
+      },
+      "test": {
+        "status": "untested"
+      },
       "file": "calls/google-workspace/api/google-workspace.api.drive.files.list.md",
       "body": ""
     },
@@ -1851,6 +2205,13 @@
       },
       "status": "unverified",
       "last_checked": "2026-11-07",
+      "smoke": {
+        "kind": "write",
+        "notes": "Creates a real draft. Run only against a test mailbox."
+      },
+      "test": {
+        "status": "untested"
+      },
       "file": "calls/google-workspace/api/google-workspace.api.gmail.users.drafts.create.md",
       "body": "The raw-message format (base64url RFC 2822) comes from the Message schema's raw field in the discovery doc."
     },
@@ -1908,6 +2269,26 @@
       },
       "status": "unverified",
       "last_checked": "2026-11-07",
+      "smoke": {
+        "kind": "read",
+        "env": [
+          "GOOGLE_ACCESS_TOKEN",
+          "GMAIL_TEST_MESSAGE_ID"
+        ],
+        "request": {
+          "method": "GET",
+          "url": "https://gmail.googleapis.com/gmail/v1/users/me/messages/${GMAIL_TEST_MESSAGE_ID}?format=minimal",
+          "headers": {
+            "Authorization": "Bearer ${GOOGLE_ACCESS_TOKEN}"
+          }
+        },
+        "expect": {
+          "status": 200
+        }
+      },
+      "test": {
+        "status": "untested"
+      },
       "file": "calls/google-workspace/api/google-workspace.api.gmail.users.messages.get.md",
       "body": ""
     },
@@ -1968,6 +2349,25 @@
       },
       "status": "unverified",
       "last_checked": "2026-11-07",
+      "smoke": {
+        "kind": "read",
+        "env": [
+          "GOOGLE_ACCESS_TOKEN"
+        ],
+        "request": {
+          "method": "GET",
+          "url": "https://gmail.googleapis.com/gmail/v1/users/me/messages?maxResults=1",
+          "headers": {
+            "Authorization": "Bearer ${GOOGLE_ACCESS_TOKEN}"
+          }
+        },
+        "expect": {
+          "status": 200
+        }
+      },
+      "test": {
+        "status": "untested"
+      },
       "file": "calls/google-workspace/api/google-workspace.api.gmail.users.messages.list.md",
       "body": "Response shape (ListMessagesResponse) is from the discovery doc. Field names in the example are from that schema; values are placeholders."
     },
@@ -2024,6 +2424,13 @@
       },
       "status": "unverified",
       "last_checked": "2026-11-07",
+      "smoke": {
+        "kind": "write",
+        "notes": "Writes real rows. Use a scratch spreadsheet."
+      },
+      "test": {
+        "status": "untested"
+      },
       "file": "calls/google-workspace/api/google-workspace.api.sheets.spreadsheets.values.append.md",
       "body": ""
     },
@@ -2080,6 +2487,26 @@
       },
       "status": "unverified",
       "last_checked": "2026-11-07",
+      "smoke": {
+        "kind": "read",
+        "env": [
+          "GOOGLE_ACCESS_TOKEN",
+          "GSHEETS_TEST_SHEET_ID"
+        ],
+        "request": {
+          "method": "GET",
+          "url": "https://sheets.googleapis.com/v4/spreadsheets/${GSHEETS_TEST_SHEET_ID}/values/A1%3AA1",
+          "headers": {
+            "Authorization": "Bearer ${GOOGLE_ACCESS_TOKEN}"
+          }
+        },
+        "expect": {
+          "status": 200
+        }
+      },
+      "test": {
+        "status": "untested"
+      },
       "file": "calls/google-workspace/api/google-workspace.api.sheets.spreadsheets.values.get.md",
       "body": ""
     },
@@ -2161,6 +2588,13 @@
       },
       "status": "unverified",
       "last_checked": "2026-11-07",
+      "smoke": {
+        "kind": "write",
+        "notes": "Posts a real message. Use a private test channel the bot is in."
+      },
+      "test": {
+        "status": "untested"
+      },
       "file": "calls/slack/api/slack.api.chat.postMessage.md",
       "body": ""
     },
@@ -2240,6 +2674,13 @@
       },
       "status": "unverified",
       "last_checked": "2026-11-07",
+      "smoke": {
+        "kind": "write",
+        "notes": "Edits a real message. Pair with a postMessage in a test channel."
+      },
+      "test": {
+        "status": "untested"
+      },
       "file": "calls/slack/api/slack.api.chat.update.md",
       "body": ""
     },
@@ -2329,6 +2770,29 @@
       },
       "status": "unverified",
       "last_checked": "2026-11-07",
+      "smoke": {
+        "kind": "read",
+        "env": [
+          "SLACK_TOKEN",
+          "SLACK_TEST_CHANNEL"
+        ],
+        "request": {
+          "method": "GET",
+          "url": "https://slack.com/api/conversations.history?channel=${SLACK_TEST_CHANNEL}&limit=1",
+          "headers": {
+            "Authorization": "Bearer ${SLACK_TOKEN}"
+          }
+        },
+        "expect": {
+          "status": 200,
+          "json": {
+            "ok": true
+          }
+        }
+      },
+      "test": {
+        "status": "untested"
+      },
       "file": "calls/slack/api/slack.api.conversations.history.md",
       "body": ""
     },
@@ -2411,6 +2875,30 @@
       },
       "status": "unverified",
       "last_checked": "2026-11-07",
+      "smoke": {
+        "kind": "read",
+        "env": [
+          "SLACK_TOKEN",
+          "SLACK_TEST_CHANNEL",
+          "SLACK_TEST_THREAD_TS"
+        ],
+        "request": {
+          "method": "GET",
+          "url": "https://slack.com/api/conversations.replies?channel=${SLACK_TEST_CHANNEL}&ts=${SLACK_TEST_THREAD_TS}&limit=1",
+          "headers": {
+            "Authorization": "Bearer ${SLACK_TOKEN}"
+          }
+        },
+        "expect": {
+          "status": 200,
+          "json": {
+            "ok": true
+          }
+        }
+      },
+      "test": {
+        "status": "untested"
+      },
       "file": "calls/slack/api/slack.api.conversations.replies.md",
       "body": "The docs list form-encoded only for this method, so the example sends query parameters, not JSON."
     },
@@ -2476,6 +2964,29 @@
       },
       "status": "unverified",
       "last_checked": "2026-11-07",
+      "smoke": {
+        "kind": "read",
+        "env": [
+          "SLACK_TOKEN",
+          "SLACK_TEST_EMAIL"
+        ],
+        "request": {
+          "method": "GET",
+          "url": "https://slack.com/api/users.lookupByEmail?email=${SLACK_TEST_EMAIL}",
+          "headers": {
+            "Authorization": "Bearer ${SLACK_TOKEN}"
+          }
+        },
+        "expect": {
+          "status": 200,
+          "json": {
+            "ok": true
+          }
+        }
+      },
+      "test": {
+        "status": "untested"
+      },
       "file": "calls/slack/api/slack.api.users.lookupByEmail.md",
       "body": ""
     }

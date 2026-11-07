@@ -17,6 +17,7 @@ https://raw.githubusercontent.com/eyeofthezeiger/call-registry/main/dist/calls.j
 Filter on what you trust:
 
 - `status: verified` for calls Matt confirmed.
+- `test.status: passing` for calls the smoke runner hit recently.
 - Everything else is a lead, not a guarantee.
 
 ## Layout
@@ -25,7 +26,7 @@ Filter on what you trust:
 calls/<provider>/<api|mcp>/<id>.md   one call per file (YAML front matter + notes)
 schema/call.schema.json              the file format
 dist/calls.json                      generated index (npm run build)
-scripts/                             validate, build, verify gate
+scripts/                             validate, build, verify gate, smoke runner
 routine/                             update routine design and doc sources
 ```
 
@@ -44,6 +45,8 @@ errors:
   - { code: not_in_channel, meaning: "...", fix: "...", fix_status: unverified }
 source: { url: https://docs.slack.dev/..., read_on: 2026-11-07, kind: docs-page }
 status: unverified                      # verified needs verified_by: matt + verified_on
+smoke: { kind: read, env: [SLACK_TOKEN], request: {...}, expect: {...} }
+test: { status: untested }              # written by the smoke runner
 ```
 
 The full format is `schema/call.schema.json`.
@@ -58,6 +61,26 @@ npm run build         # regenerate dist/calls.json (CI fails if it's stale)
 ```
 
 CI also blocks any PR that flips a status or fix to verified unless Matt opened it. CODEOWNERS plus branch protection on main ("require review from code owners") is the real gate. Turn that on in repo settings.
+
+## Smoke tests
+
+Each call can carry a `smoke` block. The runner uses your own credentials from env vars.
+
+- `read` tests run by default.
+- `write` tests run only with `--include-writes` and `SMOKE_SANDBOX=1`. Point them at test channels, repos and files.
+- `manual` tests never run. These are mostly MCP servers that need an interactive sign-in.
+- Missing env vars mean skipped, not failing.
+- For MCP, a read test checks the server's `tools/list` includes the tool. It doesn't call the tool.
+
+```
+cp .env.example .env               # fill in your own tokens, test IDs
+set -a; . ./.env; set +a
+npm run smoke                      # writes results/smoke-<date>.json
+npm run smoke -- --update          # also writes test: {...} into each file, then open a PR
+npm run smoke -- --only slack.
+```
+
+Run it on your own machine, or have your personal agent run it. Never in CI and never against someone else's account. `test` is separate from `status`: a passing test doesn't make a call verified.
 
 ## Contributing
 

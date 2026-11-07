@@ -28,4 +28,17 @@ source:
   reference_url: https://docs.github.com/rest/repos/contents#get-repository-content
 status: unverified
 last_checked: 2026-11-07
+smoke:
+  kind: read
+  env: [GITHUB_TOKEN, GITHUB_TEST_OWNER, GITHUB_TEST_REPO]
+  request:
+    method: GET
+    url: https://api.github.com/repos/${GITHUB_TEST_OWNER}/${GITHUB_TEST_REPO}/contents/
+    headers:
+      Authorization: Bearer ${GITHUB_TOKEN}
+      Accept: application/vnd.github+json
+  expect:
+    status: 200
+test:
+  status: untested
 ---

@@ -33,6 +33,12 @@ Design only. Nothing here runs yet.
 - A known fix gets proposed as `fix_status: unverified`.
 - Matt marks a fix verified once it works for him.
 
+## Smoke tests
+
+- After the diff, run `npm run smoke -- --update` with Matt's read-only credentials.
+- Passing or failing goes into `test:`, separate from `status`.
+- A call that starts failing gets flagged at the top of the PR.
+
 ## Who runs it
 
 - Matt's personal chief-of-staff agent, on his own machine. It holds his credentials; this repo never does.

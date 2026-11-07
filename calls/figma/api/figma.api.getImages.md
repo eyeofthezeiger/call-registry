@@ -43,4 +43,17 @@ source:
   spec_revision: "0.47.0"
 status: unverified
 last_checked: 2026-11-07
+smoke:
+  kind: read
+  env: [FIGMA_TOKEN, FIGMA_TEST_FILE_KEY, FIGMA_TEST_NODE_ID]
+  request:
+    method: GET
+    url: https://api.figma.com/v1/images/${FIGMA_TEST_FILE_KEY}?ids=${FIGMA_TEST_NODE_ID}&format=png
+    headers:
+      X-Figma-Token: ${FIGMA_TOKEN}
+  expect:
+    status: 200
+  notes: Tier 1, same caution as getFile.
+test:
+  status: untested
 ---

@@ -60,4 +60,9 @@ source:
   kind: readme
 status: unverified
 last_checked: 2026-11-07
+smoke:
+  kind: write
+  notes: Creates or edits a real issue. Sandbox repo only.
+test:
+  status: untested
 ---

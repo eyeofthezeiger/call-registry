@@ -43,4 +43,16 @@ source:
   spec_revision: "0.47.0"
 status: unverified
 last_checked: 2026-11-07
+smoke:
+  kind: read
+  env: [FIGMA_TOKEN, FIGMA_TEST_FILE_KEY]
+  request:
+    method: GET
+    url: https://api.figma.com/v1/files/${FIGMA_TEST_FILE_KEY}/comments
+    headers:
+      X-Figma-Token: ${FIGMA_TOKEN}
+  expect:
+    status: 200
+test:
+  status: untested
 ---

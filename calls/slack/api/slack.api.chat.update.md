@@ -43,4 +43,9 @@ source:
   kind: docs-page
 status: unverified
 last_checked: 2026-11-07
+smoke:
+  kind: write
+  notes: Edits a real message. Pair with a postMessage in a test channel.
+test:
+  status: untested
 ---

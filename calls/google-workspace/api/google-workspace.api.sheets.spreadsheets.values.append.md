@@ -34,4 +34,9 @@ source:
   spec_revision: "20261106"
 status: unverified
 last_checked: 2026-11-07
+smoke:
+  kind: write
+  notes: Writes real rows. Use a scratch spreadsheet.
+test:
+  status: untested
 ---

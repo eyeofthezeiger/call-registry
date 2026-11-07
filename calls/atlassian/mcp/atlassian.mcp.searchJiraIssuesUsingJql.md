@@ -40,4 +40,9 @@ source:
 status: unverified
 last_checked: 2026-11-07
 notes: The page says v1 traffic (https://mcp.atlassian.com/v1/mcp) moves to v2 on March 1, 2027. Use v2.
+smoke:
+  kind: manual
+  notes: Needs an interactive OAuth sign-in. Check by hand with a harmless JQL like project = TEST.
+test:
+  status: untested
 ---

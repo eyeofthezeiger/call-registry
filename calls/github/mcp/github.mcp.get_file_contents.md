@@ -60,4 +60,11 @@ source:
   kind: readme
 status: unverified
 last_checked: 2026-11-07
+smoke:
+  kind: read
+  env: [GITHUB_PAT]
+  mcp_tools_list: true
+  notes: Checks the server lists this tool. Does not call it.
+test:
+  status: untested
 ---
