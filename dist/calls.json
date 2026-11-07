@@ -1,10 +1,270 @@
 {
   "schema": "schema/call.schema.json",
-  "count": 50,
+  "count": 56,
   "counts": {
-    "unverified": 50
+    "unverified": 56
   },
   "calls": [
+    {
+      "id": "atlassian.api.confluence.content.search-cql",
+      "provider": "atlassian",
+      "product": "confluence",
+      "surface": "api",
+      "operation": "confluence.content.search-cql",
+      "summary": "Search Confluence content with CQL (REST v1, searchContentByCQL).",
+      "tags": [
+        "confluence",
+        "search",
+        "read"
+      ],
+      "endpoint": {
+        "method": "GET",
+        "url": "https://your-domain.atlassian.net/wiki/rest/api/content/search"
+      },
+      "params": {
+        "required": [
+          "cql"
+        ],
+        "optional": [
+          "cqlcontext",
+          "expand",
+          "cursor",
+          "limit"
+        ],
+        "notes": "limit defaults to 25. Page with cursor, taken from the next or prev URL of the previous response. cqlcontext sets the space, content and status to search against. Not marked deprecated in the spec."
+      },
+      "auth": {
+        "methods": [
+          "api-token",
+          "oauth2"
+        ],
+        "header": "Authorization: Basic <base64(email:api_token)>",
+        "scopes": [
+          "search:confluence",
+          "read:content-details:confluence"
+        ],
+        "scopes_mode": "any",
+        "least_privilege_scope": "search:confluence",
+        "notes": "search:confluence is the current classic scope; read:content-details:confluence is listed as the granular (Beta) one. Connect scope READ."
+      },
+      "config": {
+        "generic": "curl -s -u \"$ATLASSIAN_EMAIL:$ATLASSIAN_API_TOKEN\" -H \"Accept: application/json\" -G \\\n  --data-urlencode 'cql=type=page AND title ~ \"roadmap\"' --data-urlencode 'limit=10' \\\n  https://your-domain.atlassian.net/wiki/rest/api/content/search\n"
+      },
+      "errors": [
+        {
+          "code": "400",
+          "meaning": "The CQL is invalid or missing.",
+          "fix": "Check the CQL syntax and quote values with spaces.",
+          "fix_status": "unverified"
+        },
+        {
+          "code": "401",
+          "meaning": "Credentials are wrong or missing.",
+          "fix": "Send Basic base64(email:api_token) with a current API token.",
+          "fix_status": "unverified"
+        },
+        {
+          "code": "429",
+          "meaning": "Rate limit exceeded. Retry-After gives the seconds to wait.",
+          "fix": "Wait at least Retry-After seconds, then back off with jitter.",
+          "fix_status": "unverified"
+        }
+      ],
+      "source": {
+        "url": "https://developer.atlassian.com/cloud/confluence/swagger.v3.json",
+        "also": [
+          "https://www.atlassian.com/blog/development/generating-a-java-rest-client-for-confluence-cloud",
+          "https://developer.atlassian.com/platform/forge/apis-reference/fetch-api-product.requestconfluence/",
+          "https://developer.atlassian.com/cloud/confluence/rate-limiting/"
+        ],
+        "read_on": "2026-11-07",
+        "kind": "openapi",
+        "spec_revision": "1.0.0",
+        "reference_url": "https://developer.atlassian.com/cloud/confluence/rest/v1/api-group-search/"
+      },
+      "status": "unverified",
+      "last_checked": "2026-11-07",
+      "smoke": {
+        "kind": "read",
+        "env": [
+          "ATLASSIAN_SITE",
+          "ATLASSIAN_BASIC_AUTH"
+        ],
+        "request": {
+          "method": "GET",
+          "url": "https://${ATLASSIAN_SITE}/wiki/rest/api/content/search?cql=type%3Dpage&limit=1",
+          "headers": {
+            "Authorization": "Basic ${ATLASSIAN_BASIC_AUTH}",
+            "Accept": "application/json"
+          }
+        },
+        "expect": {
+          "status": 200
+        }
+      },
+      "test": {
+        "status": "untested"
+      },
+      "file": "calls/atlassian/api/atlassian.api.confluence.content.search-cql.md",
+      "body": ""
+    },
+    {
+      "id": "atlassian.api.confluence.page.get",
+      "provider": "atlassian",
+      "product": "confluence",
+      "surface": "api",
+      "operation": "confluence.page.get",
+      "summary": "Get one Confluence page by id, with its body (REST v2).",
+      "tags": [
+        "confluence",
+        "read"
+      ],
+      "endpoint": {
+        "method": "GET",
+        "url": "https://your-domain.atlassian.net/wiki/api/v2/pages/{id}"
+      },
+      "params": {
+        "required": [
+          "id"
+        ],
+        "optional": [
+          "body-format"
+        ],
+        "notes": "Atlassian's Forge docs call it with body-format=atlas_doc_format and body-format=storage. Other values and params aren't confirmed (the v2 reference page is JS-rendered). The v2 spec's server is https://{your-domain}/wiki/api/v2."
+      },
+      "auth": {
+        "methods": [
+          "api-token",
+          "oauth2"
+        ],
+        "header": "Authorization: Basic <base64(email:api_token)>",
+        "scopes": [
+          "read:page:confluence"
+        ],
+        "notes": "Basic auth is email:api_token, base64 encoded; Atlassian recommends it for scripts and manual calls. read:page:confluence is the scope Atlassian's Forge sample declares for this call."
+      },
+      "config": {
+        "generic": "curl -s -u \"$ATLASSIAN_EMAIL:$ATLASSIAN_API_TOKEN\" -H \"Accept: application/json\" \\\n  \"https://your-domain.atlassian.net/wiki/api/v2/pages/12345?body-format=storage\"\n"
+      },
+      "errors": [
+        {
+          "code": "429",
+          "meaning": "Rate limit exceeded. Retry-After gives the seconds to wait; some 503s carry it too.",
+          "fix": "Wait at least Retry-After seconds, then back off with jitter. Retry only idempotent calls.",
+          "fix_status": "unverified"
+        }
+      ],
+      "source": {
+        "url": "https://developer.atlassian.com/platform/forge/macros-in-the-page/",
+        "also": [
+          "https://developer.atlassian.com/platform/forge/apis-reference/fetch-api-product.requestconfluence/",
+          "https://developer.atlassian.com/cloud/confluence/openapi-v2.v3.json",
+          "https://developer.atlassian.com/cloud/confluence/basic-auth-for-rest-apis/",
+          "https://developer.atlassian.com/cloud/confluence/rate-limiting/"
+        ],
+        "read_on": "2026-11-07",
+        "kind": "docs-page",
+        "reference_url": "https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-page/"
+      },
+      "status": "unverified",
+      "last_checked": "2026-11-07",
+      "smoke": {
+        "kind": "read",
+        "env": [
+          "ATLASSIAN_SITE",
+          "ATLASSIAN_BASIC_AUTH",
+          "CONFLUENCE_TEST_PAGE_ID"
+        ],
+        "request": {
+          "method": "GET",
+          "url": "https://${ATLASSIAN_SITE}/wiki/api/v2/pages/${CONFLUENCE_TEST_PAGE_ID}?body-format=storage",
+          "headers": {
+            "Authorization": "Basic ${ATLASSIAN_BASIC_AUTH}",
+            "Accept": "application/json"
+          }
+        },
+        "expect": {
+          "status": 200
+        }
+      },
+      "test": {
+        "status": "untested"
+      },
+      "file": "calls/atlassian/api/atlassian.api.confluence.page.get.md",
+      "body": ""
+    },
+    {
+      "id": "atlassian.api.jira.issue.comment.add",
+      "provider": "atlassian",
+      "product": "jira",
+      "surface": "api",
+      "operation": "jira.issue.comment.add",
+      "summary": "Add a comment to a Jira issue (REST v3).",
+      "tags": [
+        "jira",
+        "write"
+      ],
+      "endpoint": {
+        "method": "POST",
+        "url": "https://your-domain.atlassian.net/rest/api/3/issue/{issueIdOrKey}/comment"
+      },
+      "params": {
+        "required": [
+          "issueIdOrKey",
+          "body"
+        ],
+        "optional": [
+          "expand"
+        ],
+        "notes": "Method, path and the JSON body {\"body\": ...} are what Atlassian's own Jira client (@atlassian-pi/jira-pi-client 3.0.4) sends; it adds ?expand=renderedBody. The format the v3 body field needs (plain text or Atlassian Document Format) isn't confirmed from a page. Editing is PUT .../comment/{commentId} in the same client."
+      },
+      "auth": {
+        "methods": [
+          "api-token",
+          "oauth2"
+        ],
+        "header": "Authorization: Basic <base64(email:api_token)>",
+        "notes": "Basic auth is email:api_token, base64 encoded. OAuth scopes aren't confirmed, so none are listed."
+      },
+      "config": {
+        "generic": "# Body format unconfirmed; see notes.\ncurl -s -u \"$ATLASSIAN_EMAIL:$ATLASSIAN_API_TOKEN\" -X POST \\\n  -H \"Accept: application/json\" -H \"Content-Type: application/json\" \\\n  \"https://your-domain.atlassian.net/rest/api/3/issue/PROJ-1/comment?expand=renderedBody\" -d @comment.json\n"
+      },
+      "rate_limit": {
+        "tier": "points",
+        "notes": "Writes to one issue are capped at 20 per 2 seconds and 100 per 30 seconds.",
+        "source_url": "https://developer.atlassian.com/cloud/jira/platform/rate-limiting/"
+      },
+      "errors": [
+        {
+          "code": "429",
+          "meaning": "Rate limit exceeded. Retry-After gives the seconds to wait.",
+          "fix": "Adding a comment isn't idempotent; check whether it posted before retrying.",
+          "fix_status": "unverified"
+        }
+      ],
+      "source": {
+        "url": "https://www.npmjs.com/package/@atlassian-pi/jira-pi-client",
+        "also": [
+          "https://github.com/atlassian/atlascode",
+          "https://developer.atlassian.com/cloud/jira/platform/rate-limiting/"
+        ],
+        "read_on": "2026-11-07",
+        "kind": "sdk",
+        "spec_revision": "3.0.4",
+        "reference_url": "https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-comments/"
+      },
+      "status": "unverified",
+      "last_checked": "2026-11-07",
+      "smoke": {
+        "kind": "write",
+        "notes": "No request defined until the body format is confirmed. Test project only."
+      },
+      "test": {
+        "status": "untested"
+      },
+      "file": "calls/atlassian/api/atlassian.api.jira.issue.comment.add.md",
+      "body": ""
+    },
     {
       "id": "atlassian.api.jira.issue.create",
       "provider": "atlassian",
@@ -140,15 +400,15 @@
       "smoke": {
         "kind": "read",
         "env": [
-          "JIRA_SITE",
-          "JIRA_BASIC_AUTH",
+          "ATLASSIAN_SITE",
+          "ATLASSIAN_BASIC_AUTH",
           "JIRA_TEST_ISSUE"
         ],
         "request": {
           "method": "GET",
-          "url": "https://${JIRA_SITE}/rest/api/3/issue/${JIRA_TEST_ISSUE}",
+          "url": "https://${ATLASSIAN_SITE}/rest/api/3/issue/${JIRA_TEST_ISSUE}",
           "headers": {
-            "Authorization": "Basic ${JIRA_BASIC_AUTH}",
+            "Authorization": "Basic ${ATLASSIAN_BASIC_AUTH}",
             "Accept": "application/json"
           }
         },
@@ -160,6 +420,97 @@
         "status": "untested"
       },
       "file": "calls/atlassian/api/atlassian.api.jira.issue.get.md",
+      "body": ""
+    },
+    {
+      "id": "atlassian.api.jira.search.jql",
+      "provider": "atlassian",
+      "product": "jira",
+      "surface": "api",
+      "operation": "jira.search.jql",
+      "summary": "Search Jira issues with JQL (enhanced search, REST v3).",
+      "tags": [
+        "jira",
+        "search",
+        "read"
+      ],
+      "endpoint": {
+        "method": "GET",
+        "url": "https://your-domain.atlassian.net/rest/api/3/search/jql"
+      },
+      "params": {
+        "required": [
+          "jql"
+        ],
+        "optional": [
+          "fields",
+          "expand",
+          "maxResults"
+        ],
+        "notes": "Method and params are the ones Atlassian's own Jira client (@atlassian-pi/jira-pi-client 3.0.4, used by Atlassian's VS Code extension) sends; fields is a comma-separated list. That client notes the old v2 search endpoint is deprecated (changelog CHANGE-2046). How paging works here isn't confirmed from a page; check the reference before relying on it."
+      },
+      "auth": {
+        "methods": [
+          "api-token",
+          "oauth2"
+        ],
+        "header": "Authorization: Basic <base64(email:api_token)>",
+        "notes": "Basic auth is email:api_token, base64 encoded. OAuth scopes aren't confirmed, so none are listed."
+      },
+      "config": {
+        "generic": "curl -s -u \"$ATLASSIAN_EMAIL:$ATLASSIAN_API_TOKEN\" -H \"Accept: application/json\" -G \\\n  --data-urlencode 'jql=project = PROJ ORDER BY created DESC' \\\n  --data-urlencode 'fields=summary,status,assignee' --data-urlencode 'maxResults=10' \\\n  https://your-domain.atlassian.net/rest/api/3/search/jql\n"
+      },
+      "errors": [
+        {
+          "code": "400",
+          "meaning": "Since Oct 8, 2026 the endpoint validates JQL again; queries with invalid custom JQL functions return 400 Bad Request, per the Jira changelog.",
+          "fix": "Validate the JQL first with /rest/api/3/jql/parse, or fix the custom function call.",
+          "fix_status": "unverified"
+        },
+        {
+          "code": "429",
+          "meaning": "Rate limit exceeded. RateLimit-Reason says which limit; Retry-After gives the seconds to wait.",
+          "fix": "Wait at least Retry-After seconds, then back off with jitter.",
+          "fix_status": "unverified"
+        }
+      ],
+      "source": {
+        "url": "https://www.npmjs.com/package/@atlassian-pi/jira-pi-client",
+        "also": [
+          "https://github.com/atlassian/atlascode",
+          "https://developer.atlassian.com/cloud/jira/platform/changelog/",
+          "https://developer.atlassian.com/cloud/jira/platform/rate-limiting/"
+        ],
+        "read_on": "2026-11-07",
+        "kind": "sdk",
+        "spec_revision": "3.0.4",
+        "reference_url": "https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-search/"
+      },
+      "status": "unverified",
+      "last_checked": "2026-11-07",
+      "smoke": {
+        "kind": "read",
+        "env": [
+          "ATLASSIAN_SITE",
+          "ATLASSIAN_BASIC_AUTH",
+          "JIRA_TEST_ISSUE"
+        ],
+        "request": {
+          "method": "GET",
+          "url": "https://${ATLASSIAN_SITE}/rest/api/3/search/jql?jql=key%3D${JIRA_TEST_ISSUE}&fields=summary&maxResults=1",
+          "headers": {
+            "Authorization": "Basic ${ATLASSIAN_BASIC_AUTH}",
+            "Accept": "application/json"
+          }
+        },
+        "expect": {
+          "status": 200
+        }
+      },
+      "test": {
+        "status": "untested"
+      },
+      "file": "calls/atlassian/api/atlassian.api.jira.search.jql.md",
       "body": ""
     },
     {
@@ -242,6 +593,85 @@
         "status": "untested"
       },
       "file": "calls/atlassian/mcp/atlassian.mcp.addOrEditJiraIssueComment.md",
+      "body": ""
+    },
+    {
+      "id": "atlassian.mcp.createConfluenceContent",
+      "provider": "atlassian",
+      "product": "confluence",
+      "surface": "mcp",
+      "operation": "createConfluenceContent",
+      "summary": "Create a Confluence page (or other content) in a space.",
+      "tags": [
+        "confluence",
+        "write"
+      ],
+      "tool": {
+        "name": "createConfluenceContent",
+        "server": "atlassian",
+        "server_url": "https://mcp.atlassian.com/v2/mcp",
+        "transport": "http",
+        "read_only": false
+      },
+      "params": {
+        "required": [
+          "cloudId",
+          "parent",
+          "contentType",
+          "title",
+          "body"
+        ],
+        "notes": "Argument names come from the call examples in Atlassian's own skills (atlassian-mcp-server repo, read Nov 7, 2026), not from a published schema. Confirm against tools/list. cloudId can be the site URL. Atlassian's skills call it directly; if it isn't in your tool list, reach it through discover and execute. Before writing the body, Atlassian's skills load the non-primary getContentFormatGuide and the space's instructions (getConfluenceSpace). parent is an object with spaceId (numeric) and, to nest the page, parentContentId. contentType is page in the examples. body is {format, value}; examples use format markdown. Replaces the old createConfluencePage tool."
+      },
+      "auth": {
+        "methods": [
+          "oauth2",
+          "api-token"
+        ],
+        "notes": "OAuth 2.1 sign-in by default. Headless setups can use an API token once an org admin enables it (Atlassian Administration > Rovo > Rovo MCP server > Authentication): personal token as Authorization: Basic <base64(email:api_token)>, or a service account key as Authorization: Bearer <api_key>. Admins grant tools per permission group."
+      },
+      "config": {
+        "generic": "{ \"mcpServers\": { \"atlassian\": { \"url\": \"https://mcp.atlassian.com/v2/mcp\" } } }\n",
+        "platforms": {
+          "claude-code": "claude mcp add --transport http atlassian https://mcp.atlassian.com/v2/mcp\n# then run /mcp in Claude Code to sign in\n",
+          "claude-desktop": "{ \"mcpServers\": { \"atlassian\": { \"url\": \"https://mcp.atlassian.com/v2/mcp\" } } }\n",
+          "codex": "codex mcp add atlassian --url https://mcp.atlassian.com/v2/mcp\n",
+          "windsurf": "{ \"mcpServers\": { \"atlassian\": { \"serverUrl\": \"https://mcp.atlassian.com/v2/mcp/\" } } }\n"
+        }
+      },
+      "source": {
+        "url": "https://github.com/atlassian/atlassian-mcp-server/tree/main/skills",
+        "also": [
+          "https://github.com/atlassian/atlassian-mcp-server"
+        ],
+        "read_on": "2026-11-07",
+        "kind": "readme"
+      },
+      "status": "unverified",
+      "last_checked": "2026-11-07",
+      "notes": "Needs the write_confluence permission group, granted by the org admin.",
+      "errors": [
+        {
+          "code": "unknown-argument-ignored",
+          "meaning": "Per Atlassian's skills, the server drops argument names it doesn't recognize instead of returning an error. The call succeeds and the value is silently ignored.",
+          "fix": "Use the exact argument names from the live tools/list schema.",
+          "fix_status": "unverified"
+        },
+        {
+          "code": "403",
+          "meaning": "Per the server README, sign-in can succeed while tool calls return 403. Causes it lists: IP allowlisting on the site, missing scopes, app permissions or another access policy.",
+          "fix": "Find the denial reason first. Check the token or OAuth scopes and the site's IP allowlist before changing either.",
+          "fix_status": "unverified"
+        }
+      ],
+      "smoke": {
+        "kind": "write",
+        "notes": "Writes a real page. Test space only."
+      },
+      "test": {
+        "status": "untested"
+      },
+      "file": "calls/atlassian/mcp/atlassian.mcp.createConfluenceContent.md",
       "body": ""
     },
     {
@@ -741,6 +1171,93 @@
         "status": "untested"
       },
       "file": "calls/atlassian/mcp/atlassian.mcp.searchJiraIssuesUsingJql.md",
+      "body": ""
+    },
+    {
+      "id": "atlassian.mcp.updateConfluenceContent",
+      "provider": "atlassian",
+      "product": "confluence",
+      "surface": "mcp",
+      "operation": "updateConfluenceContent",
+      "summary": "Update the body of an existing Confluence page.",
+      "tags": [
+        "confluence",
+        "write"
+      ],
+      "tool": {
+        "name": "updateConfluenceContent",
+        "server": "atlassian",
+        "server_url": "https://mcp.atlassian.com/v2/mcp",
+        "transport": "http",
+        "read_only": false
+      },
+      "params": {
+        "required": [
+          "cloudId",
+          "contentId",
+          "snapshotToken",
+          "body"
+        ],
+        "optional": [
+          "versionMessage"
+        ],
+        "notes": "Argument names come from the call examples in Atlassian's own skills (atlassian-mcp-server repo, read Nov 7, 2026), not from a published schema. Confirm against tools/list. cloudId can be the site URL. Atlassian's skills call it directly; if it isn't in your tool list, reach it through discover and execute. Before writing the body, Atlassian's skills load the non-primary getContentFormatGuide and the space's instructions (getConfluenceSpace). snapshotToken comes from the getConfluenceContent read just before (detail=full). body is {format, value}. Replaces the old updateConfluencePage tool."
+      },
+      "auth": {
+        "methods": [
+          "oauth2",
+          "api-token"
+        ],
+        "notes": "OAuth 2.1 sign-in by default. Headless setups can use an API token once an org admin enables it (Atlassian Administration > Rovo > Rovo MCP server > Authentication): personal token as Authorization: Basic <base64(email:api_token)>, or a service account key as Authorization: Bearer <api_key>. Admins grant tools per permission group."
+      },
+      "config": {
+        "generic": "{ \"mcpServers\": { \"atlassian\": { \"url\": \"https://mcp.atlassian.com/v2/mcp\" } } }\n",
+        "platforms": {
+          "claude-code": "claude mcp add --transport http atlassian https://mcp.atlassian.com/v2/mcp\n# then run /mcp in Claude Code to sign in\n",
+          "claude-desktop": "{ \"mcpServers\": { \"atlassian\": { \"url\": \"https://mcp.atlassian.com/v2/mcp\" } } }\n",
+          "codex": "codex mcp add atlassian --url https://mcp.atlassian.com/v2/mcp\n",
+          "windsurf": "{ \"mcpServers\": { \"atlassian\": { \"serverUrl\": \"https://mcp.atlassian.com/v2/mcp/\" } } }\n"
+        }
+      },
+      "source": {
+        "url": "https://github.com/atlassian/atlassian-mcp-server/tree/main/skills",
+        "also": [
+          "https://github.com/atlassian/atlassian-mcp-server"
+        ],
+        "read_on": "2026-11-07",
+        "kind": "readme"
+      },
+      "status": "unverified",
+      "last_checked": "2026-11-07",
+      "notes": "Needs the write_confluence permission group, granted by the org admin.",
+      "errors": [
+        {
+          "code": "missing-snapshotToken",
+          "meaning": "Per Atlassian's skills, a document edit without the snapshotToken from the preceding read fails.",
+          "fix": "Read the page with getConfluenceContent first and pass its snapshotToken. Read again before each edit; a stale token ties the edit to an old version.",
+          "fix_status": "unverified"
+        },
+        {
+          "code": "unknown-argument-ignored",
+          "meaning": "Per Atlassian's skills, the server drops argument names it doesn't recognize instead of returning an error. The call succeeds and the value is silently ignored.",
+          "fix": "Use the exact argument names from the live tools/list schema.",
+          "fix_status": "unverified"
+        },
+        {
+          "code": "403",
+          "meaning": "Per the server README, sign-in can succeed while tool calls return 403. Causes it lists: IP allowlisting on the site, missing scopes, app permissions or another access policy.",
+          "fix": "Find the denial reason first. Check the token or OAuth scopes and the site's IP allowlist before changing either.",
+          "fix_status": "unverified"
+        }
+      ],
+      "smoke": {
+        "kind": "write",
+        "notes": "Writes a real page. Test space only."
+      },
+      "test": {
+        "status": "untested"
+      },
+      "file": "calls/atlassian/mcp/atlassian.mcp.updateConfluenceContent.md",
       "body": ""
     },
     {

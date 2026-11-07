@@ -45,12 +45,12 @@ last_checked: 2026-11-07
 notes: The v3 reference pages are JS-rendered and the OpenAPI file came back without paths, so only the method, path, auth and limits here are from a page. Fill params and scopes from a normal browser.
 smoke:
   kind: read
-  env: [JIRA_SITE, JIRA_BASIC_AUTH, JIRA_TEST_ISSUE]
+  env: [ATLASSIAN_SITE, ATLASSIAN_BASIC_AUTH, JIRA_TEST_ISSUE]
   request:
     method: GET
-    url: https://${JIRA_SITE}/rest/api/3/issue/${JIRA_TEST_ISSUE}
+    url: https://${ATLASSIAN_SITE}/rest/api/3/issue/${JIRA_TEST_ISSUE}
     headers:
-      Authorization: Basic ${JIRA_BASIC_AUTH}
+      Authorization: Basic ${ATLASSIAN_BASIC_AUTH}
       Accept: application/json
   expect:
     status: 200

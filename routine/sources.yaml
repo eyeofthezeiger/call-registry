@@ -77,3 +77,15 @@ atlassian:
   - kind: docs-page
     url: https://developer.atlassian.com/cloud/confluence/rate-limiting/
     reachable: true
+  - kind: openapi
+    url: https://developer.atlassian.com/cloud/confluence/swagger.v3.json
+    reachable: true
+    note: Confluence v1 spec, served cut off before the end (about 110K characters). Has content/search.
+  - kind: docs-page
+    url: https://developer.atlassian.com/platform/forge/apis-reference/fetch-api-product.requestconfluence/
+    reachable: true
+    note: Forge docs render. Their code samples show v2 calls and the scopes they need.
+  - kind: sdk
+    url: https://www.npmjs.com/package/@atlassian-pi/jira-pi-client
+    reachable: true
+    note: Atlassian's own Jira REST client (npm pack works). Shows method, path and params it sends.

@@ -334,8 +334,10 @@
             "discovery",
             "docs-page",
             "readme",
-            "tools-list"
-          ]
+            "tools-list",
+            "sdk"
+          ],
+          "description": "sdk means a vendor's own published client library, read for the call it makes."
         },
         "spec_revision": {
           "type": "string"
