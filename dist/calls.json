@@ -1,8 +1,8 @@
 {
   "schema": "schema/call.schema.json",
-  "count": 21,
+  "count": 30,
   "counts": {
-    "unverified": 21
+    "unverified": 30
   },
   "calls": [
     {
@@ -371,6 +371,565 @@
       "last_checked": "2026-11-07",
       "notes": "The page says v1 traffic (https://mcp.atlassian.com/v1/mcp) moves to v2 on March 1, 2027. Use v2.",
       "file": "calls/atlassian/mcp/atlassian.mcp.searchJiraIssuesUsingJql.md",
+      "body": ""
+    },
+    {
+      "id": "github.api.issues.create",
+      "provider": "github",
+      "surface": "api",
+      "operation": "issues/create",
+      "summary": "Create an issue. Anyone with pull access can.",
+      "tags": [
+        "issues",
+        "write"
+      ],
+      "endpoint": {
+        "method": "POST",
+        "url": "https://api.github.com/repos/{owner}/{repo}/issues"
+      },
+      "params": {
+        "required": [
+          "owner",
+          "repo",
+          "title"
+        ],
+        "optional": [
+          "body",
+          "assignees",
+          "labels",
+          "milestone",
+          "type",
+          "parent_issue_id"
+        ],
+        "notes": "The spec marks removal of the singular assignee field as a breaking change in API version 2026-03-10; use assignees. Returns 410 if issues are disabled."
+      },
+      "auth": {
+        "methods": [
+          "personal-access-token",
+          "oauth2",
+          "app-token"
+        ],
+        "header": "Authorization: Bearer <GITHUB_TOKEN>",
+        "notes": "Token permissions are not listed in the OpenAPI spec. Fill fine-grained permissions from the reference page on first test."
+      },
+      "config": {
+        "generic": "curl -s -X POST -H \"Authorization: Bearer $GITHUB_TOKEN\" -H \"Accept: application/vnd.github+json\" \\\n  https://api.github.com/repos/OWNER/REPO/issues -d '{\"title\":\"Bug\",\"body\":\"Details\",\"labels\":[\"bug\"]}'\n"
+      },
+      "rate_limit": {
+        "notes": "Triggers notifications. Creating content too fast can hit secondary rate limits."
+      },
+      "errors": [
+        {
+          "code": "410",
+          "meaning": "Issues are disabled in the repository.",
+          "fix": "Enable issues in repo settings, or file elsewhere.",
+          "fix_status": "unverified"
+        }
+      ],
+      "source": {
+        "url": "https://raw.githubusercontent.com/github/rest-api-description/main/descriptions/api.github.com/api.github.com.json",
+        "read_on": "2026-11-07",
+        "kind": "openapi",
+        "spec_revision": "1.1.4",
+        "reference_url": "https://docs.github.com/rest/issues/issues#create-an-issue"
+      },
+      "status": "unverified",
+      "last_checked": "2026-11-07",
+      "file": "calls/github/api/github.api.issues.create.md",
+      "body": ""
+    },
+    {
+      "id": "github.api.issues.create-comment",
+      "provider": "github",
+      "surface": "api",
+      "operation": "issues/create-comment",
+      "summary": "Comment on an issue or a pull request (every PR is an issue).",
+      "tags": [
+        "issues",
+        "pull-requests",
+        "write"
+      ],
+      "endpoint": {
+        "method": "POST",
+        "url": "https://api.github.com/repos/{owner}/{repo}/issues/{issue_number}/comments"
+      },
+      "params": {
+        "required": [
+          "owner",
+          "repo",
+          "issue_number",
+          "body"
+        ]
+      },
+      "auth": {
+        "methods": [
+          "personal-access-token",
+          "oauth2",
+          "app-token"
+        ],
+        "header": "Authorization: Bearer <GITHUB_TOKEN>",
+        "notes": "Token permissions are not listed in the OpenAPI spec. Fill fine-grained permissions from the reference page on first test."
+      },
+      "config": {
+        "generic": "curl -s -X POST -H \"Authorization: Bearer $GITHUB_TOKEN\" -H \"Accept: application/vnd.github+json\" \\\n  https://api.github.com/repos/OWNER/REPO/issues/1/comments -d '{\"body\":\"Looks good\"}'\n"
+      },
+      "rate_limit": {
+        "notes": "Triggers notifications. Creating content too fast can hit secondary rate limits."
+      },
+      "source": {
+        "url": "https://raw.githubusercontent.com/github/rest-api-description/main/descriptions/api.github.com/api.github.com.json",
+        "read_on": "2026-11-07",
+        "kind": "openapi",
+        "spec_revision": "1.1.4",
+        "reference_url": "https://docs.github.com/rest/issues/comments#create-an-issue-comment"
+      },
+      "status": "unverified",
+      "last_checked": "2026-11-07",
+      "file": "calls/github/api/github.api.issues.create-comment.md",
+      "body": ""
+    },
+    {
+      "id": "github.api.pulls.create",
+      "provider": "github",
+      "surface": "api",
+      "operation": "pulls/create",
+      "summary": "Open a pull request from a head branch into a base branch.",
+      "tags": [
+        "pull-requests",
+        "write"
+      ],
+      "endpoint": {
+        "method": "POST",
+        "url": "https://api.github.com/repos/{owner}/{repo}/pulls",
+        "content_types": [
+          "application/json"
+        ]
+      },
+      "params": {
+        "required": [
+          "owner",
+          "repo",
+          "head",
+          "base"
+        ],
+        "optional": [
+          "title",
+          "body",
+          "draft",
+          "maintainer_can_modify",
+          "head_repo",
+          "issue"
+        ],
+        "notes": "You need write access to the head branch. In org repos you must be an org member. Drafts depend on plan (see spec description)."
+      },
+      "auth": {
+        "methods": [
+          "personal-access-token",
+          "oauth2",
+          "app-token"
+        ],
+        "header": "Authorization: Bearer <GITHUB_TOKEN>",
+        "notes": "Token permissions are not listed in the OpenAPI spec. Fill fine-grained permissions from the reference page on first test."
+      },
+      "config": {
+        "generic": "curl -s -X POST -H \"Authorization: Bearer $GITHUB_TOKEN\" -H \"Accept: application/vnd.github+json\" \\\n  https://api.github.com/repos/OWNER/REPO/pulls \\\n  -d '{\"title\":\"My change\",\"head\":\"my-branch\",\"base\":\"main\",\"draft\":true}'\n"
+      },
+      "rate_limit": {
+        "notes": "Triggers notifications. Creating content too fast can hit secondary rate limits."
+      },
+      "errors": [
+        {
+          "code": "422",
+          "meaning": "Validation failed, or the endpoint has been spammed.",
+          "fix_status": "none"
+        },
+        {
+          "code": "403",
+          "meaning": "Forbidden.",
+          "fix_status": "none"
+        }
+      ],
+      "source": {
+        "url": "https://raw.githubusercontent.com/github/rest-api-description/main/descriptions/api.github.com/api.github.com.json",
+        "read_on": "2026-11-07",
+        "kind": "openapi",
+        "spec_revision": "1.1.4",
+        "reference_url": "https://docs.github.com/rest/pulls/pulls#create-a-pull-request"
+      },
+      "status": "unverified",
+      "last_checked": "2026-11-07",
+      "file": "calls/github/api/github.api.pulls.create.md",
+      "body": ""
+    },
+    {
+      "id": "github.api.pulls.get",
+      "provider": "github",
+      "surface": "api",
+      "operation": "pulls/get",
+      "summary": "Get one pull request, including mergeable state.",
+      "tags": [
+        "pull-requests",
+        "read"
+      ],
+      "endpoint": {
+        "method": "GET",
+        "url": "https://api.github.com/repos/{owner}/{repo}/pulls/{pull_number}"
+      },
+      "params": {
+        "required": [
+          "owner",
+          "repo",
+          "pull_number"
+        ],
+        "notes": "mergeable can be null while GitHub computes it in the background; call again after a short wait."
+      },
+      "auth": {
+        "methods": [
+          "personal-access-token",
+          "oauth2",
+          "app-token"
+        ],
+        "header": "Authorization: Bearer <GITHUB_TOKEN>",
+        "notes": "Token permissions are not listed in the OpenAPI spec. Fill fine-grained permissions from the reference page on first test."
+      },
+      "config": {
+        "generic": "curl -s -H \"Authorization: Bearer $GITHUB_TOKEN\" -H \"Accept: application/vnd.github+json\" \\\n  https://api.github.com/repos/OWNER/REPO/pulls/1\n"
+      },
+      "source": {
+        "url": "https://raw.githubusercontent.com/github/rest-api-description/main/descriptions/api.github.com/api.github.com.json",
+        "read_on": "2026-11-07",
+        "kind": "openapi",
+        "spec_revision": "1.1.4",
+        "reference_url": "https://docs.github.com/rest/pulls/pulls#get-a-pull-request"
+      },
+      "status": "unverified",
+      "last_checked": "2026-11-07",
+      "file": "calls/github/api/github.api.pulls.get.md",
+      "body": ""
+    },
+    {
+      "id": "github.api.repos.get-content",
+      "provider": "github",
+      "surface": "api",
+      "operation": "repos/get-content",
+      "summary": "Get a file or directory listing from a repo at a ref.",
+      "tags": [
+        "repos",
+        "read"
+      ],
+      "endpoint": {
+        "method": "GET",
+        "url": "https://api.github.com/repos/{owner}/{repo}/contents/{path}"
+      },
+      "params": {
+        "required": [
+          "owner",
+          "repo",
+          "path"
+        ],
+        "optional": [
+          "ref"
+        ],
+        "notes": "Directory listings cap at 1,000 files. Files up to 1 MB get every feature; 1 to 100 MB only with the raw or object media types; over 100 MB isn't supported. Accept application/vnd.github.raw+json returns raw file contents."
+      },
+      "auth": {
+        "methods": [
+          "personal-access-token",
+          "oauth2",
+          "app-token"
+        ],
+        "header": "Authorization: Bearer <GITHUB_TOKEN>",
+        "notes": "Token permissions are not listed in the OpenAPI spec. Fill fine-grained permissions from the reference page on first test."
+      },
+      "config": {
+        "generic": "curl -s -H \"Authorization: Bearer $GITHUB_TOKEN\" -H \"Accept: application/vnd.github.raw+json\" \\\n  \"https://api.github.com/repos/OWNER/REPO/contents/README.md?ref=main\"\n"
+      },
+      "source": {
+        "url": "https://raw.githubusercontent.com/github/rest-api-description/main/descriptions/api.github.com/api.github.com.json",
+        "read_on": "2026-11-07",
+        "kind": "openapi",
+        "spec_revision": "1.1.4",
+        "reference_url": "https://docs.github.com/rest/repos/contents#get-repository-content"
+      },
+      "status": "unverified",
+      "last_checked": "2026-11-07",
+      "file": "calls/github/api/github.api.repos.get-content.md",
+      "body": ""
+    },
+    {
+      "id": "github.mcp.create_pull_request",
+      "provider": "github",
+      "surface": "mcp",
+      "operation": "create_pull_request",
+      "summary": "Open a new pull request.",
+      "tags": [
+        "pull-requests",
+        "write"
+      ],
+      "tool": {
+        "name": "create_pull_request",
+        "server": "github",
+        "server_url": "https://api.githubcopilot.com/mcp/",
+        "transport": "http",
+        "toolset": "pull_requests",
+        "read_only": false
+      },
+      "params": {
+        "required": [
+          "owner",
+          "repo",
+          "title",
+          "head",
+          "base"
+        ],
+        "optional": [
+          "body",
+          "draft",
+          "maintainer_can_modify",
+          "reviewers"
+        ],
+        "notes": "The README lists an MCP App UI for this tool, ui://github-mcp-server/pr-write."
+      },
+      "auth": {
+        "methods": [
+          "oauth2",
+          "personal-access-token"
+        ],
+        "header": "Authorization: Bearer <GITHUB_PAT>",
+        "scopes": [
+          "repo"
+        ],
+        "notes": "The README lists repo as the OAuth challenge scope. OAuth works only in hosts that registered a GitHub or OAuth app; PAT works in any host with remote MCP support."
+      },
+      "config": {
+        "generic": "{\n  \"servers\": {\n    \"github\": {\n      \"type\": \"http\",\n      \"url\": \"https://api.githubcopilot.com/mcp/\",\n      \"headers\": { \"Authorization\": \"Bearer ${GITHUB_PAT}\" }\n    }\n  }\n}\n",
+        "platforms": {
+          "claude-code": "claude mcp add --transport http github https://api.githubcopilot.com/mcp -H \"Authorization: Bearer $GITHUB_PAT\"\n",
+          "vscode": "{\n  \"servers\": {\n    \"github\": {\n      \"type\": \"http\",\n      \"url\": \"https://api.githubcopilot.com/mcp/\",\n      \"headers\": { \"Authorization\": \"Bearer ${input:github_mcp_pat}\" }\n    }\n  },\n  \"inputs\": [\n    { \"type\": \"promptString\", \"id\": \"github_mcp_pat\", \"description\": \"GitHub Personal Access Token\", \"password\": true }\n  ]\n}\n",
+          "docker": "claude mcp add github -e GITHUB_PERSONAL_ACCESS_TOKEN=YOUR_GITHUB_PAT -- docker run -i --rm -e GITHUB_PERSONAL_ACCESS_TOKEN ghcr.io/github/github-mcp-server\n"
+        }
+      },
+      "errors": [
+        {
+          "code": "artifact-open-fails",
+          "meaning": "In Matt's work org, an artifact tries to open after the call, then breaks. A config setting fixes it.",
+          "fix": "Unknown. Placeholder until Matt gives the setting.",
+          "fix_status": "unverified",
+          "seen_in": "Matt's work org",
+          "needs_info": "Which client shows it (Claude Code, Claude Desktop, VS Code, claude.ai)? What is the config setting and where does it go? Is the artifact the MCP App UI (ui://github-mcp-server/pr-write) the README lists for this tool? That link is a guess, not confirmed."
+        }
+      ],
+      "source": {
+        "url": "https://raw.githubusercontent.com/github/github-mcp-server/main/README.md",
+        "also": [
+          "https://raw.githubusercontent.com/github/github-mcp-server/main/docs/remote-server.md",
+          "https://raw.githubusercontent.com/github/github-mcp-server/main/docs/installation-guides/install-claude.md"
+        ],
+        "read_on": "2026-11-07",
+        "kind": "readme"
+      },
+      "status": "unverified",
+      "last_checked": "2026-11-07",
+      "file": "calls/github/mcp/github.mcp.create_pull_request.md",
+      "body": ""
+    },
+    {
+      "id": "github.mcp.get_file_contents",
+      "provider": "github",
+      "surface": "mcp",
+      "operation": "get_file_contents",
+      "summary": "Get a file or directory listing from a repo.",
+      "tags": [
+        "repos",
+        "read"
+      ],
+      "tool": {
+        "name": "get_file_contents",
+        "server": "github",
+        "server_url": "https://api.githubcopilot.com/mcp/",
+        "transport": "http",
+        "toolset": "repos",
+        "read_only": true
+      },
+      "params": {
+        "required": [
+          "owner",
+          "repo"
+        ],
+        "optional": [
+          "path",
+          "ref",
+          "sha",
+          "fields"
+        ],
+        "notes": "ref accepts refs/heads/<branch>, refs/tags/<tag> or refs/pull/<n>/head. sha wins over ref when both are set."
+      },
+      "auth": {
+        "methods": [
+          "oauth2",
+          "personal-access-token"
+        ],
+        "header": "Authorization: Bearer <GITHUB_PAT>",
+        "scopes": [
+          "repo"
+        ],
+        "notes": "The README lists repo as the OAuth challenge scope. OAuth works only in hosts that registered a GitHub or OAuth app; PAT works in any host with remote MCP support."
+      },
+      "config": {
+        "generic": "{\n  \"servers\": {\n    \"github\": {\n      \"type\": \"http\",\n      \"url\": \"https://api.githubcopilot.com/mcp/\",\n      \"headers\": { \"Authorization\": \"Bearer ${GITHUB_PAT}\" }\n    }\n  }\n}\n",
+        "platforms": {
+          "claude-code": "claude mcp add --transport http github https://api.githubcopilot.com/mcp -H \"Authorization: Bearer $GITHUB_PAT\"\n",
+          "vscode": "{\n  \"servers\": {\n    \"github\": {\n      \"type\": \"http\",\n      \"url\": \"https://api.githubcopilot.com/mcp/\",\n      \"headers\": { \"Authorization\": \"Bearer ${input:github_mcp_pat}\" }\n    }\n  },\n  \"inputs\": [\n    { \"type\": \"promptString\", \"id\": \"github_mcp_pat\", \"description\": \"GitHub Personal Access Token\", \"password\": true }\n  ]\n}\n",
+          "docker": "claude mcp add github -e GITHUB_PERSONAL_ACCESS_TOKEN=YOUR_GITHUB_PAT -- docker run -i --rm -e GITHUB_PERSONAL_ACCESS_TOKEN ghcr.io/github/github-mcp-server\n"
+        }
+      },
+      "source": {
+        "url": "https://raw.githubusercontent.com/github/github-mcp-server/main/README.md",
+        "also": [
+          "https://raw.githubusercontent.com/github/github-mcp-server/main/docs/remote-server.md",
+          "https://raw.githubusercontent.com/github/github-mcp-server/main/docs/installation-guides/install-claude.md"
+        ],
+        "read_on": "2026-11-07",
+        "kind": "readme"
+      },
+      "status": "unverified",
+      "last_checked": "2026-11-07",
+      "file": "calls/github/mcp/github.mcp.get_file_contents.md",
+      "body": ""
+    },
+    {
+      "id": "github.mcp.issue_write",
+      "provider": "github",
+      "surface": "mcp",
+      "operation": "issue_write",
+      "summary": "Create or update an issue.",
+      "tags": [
+        "issues",
+        "write"
+      ],
+      "tool": {
+        "name": "issue_write",
+        "server": "github",
+        "server_url": "https://api.githubcopilot.com/mcp/",
+        "transport": "http",
+        "toolset": "issues",
+        "read_only": false
+      },
+      "params": {
+        "required": [
+          "method",
+          "owner",
+          "repo"
+        ],
+        "optional": [
+          "title",
+          "body",
+          "issue_number",
+          "labels",
+          "assignees",
+          "milestone",
+          "duplicate_of",
+          "parent_issue_number",
+          "issue_fields"
+        ],
+        "notes": "method is create or update. issue_number is needed for update. The README lists an MCP App UI, ui://github-mcp-server/issue-write."
+      },
+      "auth": {
+        "methods": [
+          "oauth2",
+          "personal-access-token"
+        ],
+        "header": "Authorization: Bearer <GITHUB_PAT>",
+        "scopes": [
+          "repo"
+        ],
+        "notes": "The README lists repo as the OAuth challenge scope. OAuth works only in hosts that registered a GitHub or OAuth app; PAT works in any host with remote MCP support."
+      },
+      "config": {
+        "generic": "{\n  \"servers\": {\n    \"github\": {\n      \"type\": \"http\",\n      \"url\": \"https://api.githubcopilot.com/mcp/\",\n      \"headers\": { \"Authorization\": \"Bearer ${GITHUB_PAT}\" }\n    }\n  }\n}\n",
+        "platforms": {
+          "claude-code": "claude mcp add --transport http github https://api.githubcopilot.com/mcp -H \"Authorization: Bearer $GITHUB_PAT\"\n",
+          "vscode": "{\n  \"servers\": {\n    \"github\": {\n      \"type\": \"http\",\n      \"url\": \"https://api.githubcopilot.com/mcp/\",\n      \"headers\": { \"Authorization\": \"Bearer ${input:github_mcp_pat}\" }\n    }\n  },\n  \"inputs\": [\n    { \"type\": \"promptString\", \"id\": \"github_mcp_pat\", \"description\": \"GitHub Personal Access Token\", \"password\": true }\n  ]\n}\n",
+          "docker": "claude mcp add github -e GITHUB_PERSONAL_ACCESS_TOKEN=YOUR_GITHUB_PAT -- docker run -i --rm -e GITHUB_PERSONAL_ACCESS_TOKEN ghcr.io/github/github-mcp-server\n"
+        }
+      },
+      "source": {
+        "url": "https://raw.githubusercontent.com/github/github-mcp-server/main/README.md",
+        "also": [
+          "https://raw.githubusercontent.com/github/github-mcp-server/main/docs/remote-server.md",
+          "https://raw.githubusercontent.com/github/github-mcp-server/main/docs/installation-guides/install-claude.md"
+        ],
+        "read_on": "2026-11-07",
+        "kind": "readme"
+      },
+      "status": "unverified",
+      "last_checked": "2026-11-07",
+      "file": "calls/github/mcp/github.mcp.issue_write.md",
+      "body": ""
+    },
+    {
+      "id": "github.mcp.pull_request_read",
+      "provider": "github",
+      "surface": "mcp",
+      "operation": "pull_request_read",
+      "summary": "Read a PR: details, diff, files, commits, reviews, comments, status or check runs.",
+      "tags": [
+        "pull-requests",
+        "read"
+      ],
+      "tool": {
+        "name": "pull_request_read",
+        "server": "github",
+        "server_url": "https://api.githubcopilot.com/mcp/",
+        "transport": "http",
+        "toolset": "pull_requests",
+        "read_only": true
+      },
+      "params": {
+        "required": [
+          "method",
+          "owner",
+          "repo",
+          "pullNumber"
+        ],
+        "optional": [
+          "page",
+          "perPage",
+          "after"
+        ],
+        "notes": "method is one of get, get_diff, get_status, get_files, get_commits, get_review_comments, get_reviews, get_comments, get_check_runs."
+      },
+      "auth": {
+        "methods": [
+          "oauth2",
+          "personal-access-token"
+        ],
+        "header": "Authorization: Bearer <GITHUB_PAT>",
+        "scopes": [
+          "repo"
+        ],
+        "notes": "The README lists repo as the OAuth challenge scope. OAuth works only in hosts that registered a GitHub or OAuth app; PAT works in any host with remote MCP support."
+      },
+      "config": {
+        "generic": "{\n  \"servers\": {\n    \"github\": {\n      \"type\": \"http\",\n      \"url\": \"https://api.githubcopilot.com/mcp/\",\n      \"headers\": { \"Authorization\": \"Bearer ${GITHUB_PAT}\" }\n    }\n  }\n}\n",
+        "platforms": {
+          "claude-code": "claude mcp add --transport http github https://api.githubcopilot.com/mcp -H \"Authorization: Bearer $GITHUB_PAT\"\n",
+          "vscode": "{\n  \"servers\": {\n    \"github\": {\n      \"type\": \"http\",\n      \"url\": \"https://api.githubcopilot.com/mcp/\",\n      \"headers\": { \"Authorization\": \"Bearer ${input:github_mcp_pat}\" }\n    }\n  },\n  \"inputs\": [\n    { \"type\": \"promptString\", \"id\": \"github_mcp_pat\", \"description\": \"GitHub Personal Access Token\", \"password\": true }\n  ]\n}\n",
+          "docker": "claude mcp add github -e GITHUB_PERSONAL_ACCESS_TOKEN=YOUR_GITHUB_PAT -- docker run -i --rm -e GITHUB_PERSONAL_ACCESS_TOKEN ghcr.io/github/github-mcp-server\n"
+        }
+      },
+      "source": {
+        "url": "https://raw.githubusercontent.com/github/github-mcp-server/main/README.md",
+        "also": [
+          "https://raw.githubusercontent.com/github/github-mcp-server/main/docs/remote-server.md",
+          "https://raw.githubusercontent.com/github/github-mcp-server/main/docs/installation-guides/install-claude.md"
+        ],
+        "read_on": "2026-11-07",
+        "kind": "readme"
+      },
+      "status": "unverified",
+      "last_checked": "2026-11-07",
+      "file": "calls/github/mcp/github.mcp.pull_request_read.md",
       "body": ""
     },
     {
