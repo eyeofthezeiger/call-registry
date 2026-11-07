@@ -40,6 +40,10 @@ slack:
     url: https://docs.slack.dev/ai/slack-mcp-server
     reachable: true
     note: Lists features by area, not every tool name. Use the server's tools/list.
+  - kind: readme
+    url: https://github.com/slackapi/slack-skills-plugin
+    reachable: true
+    note: git clone works. Skills and commands name the MCP tools and some arguments.
 atlassian:
   - kind: docs-page
     url: https://support.atlassian.com/atlassian-rovo-mcp-server/docs/supported-tools/
